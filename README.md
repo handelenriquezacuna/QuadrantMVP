@@ -38,6 +38,8 @@ docker compose --profile llm up
 ```
 Levanta `ollama` y `ollama-pull`, que descarga `OLLAMA_MODEL` (por defecto `llama3.2:3b`, unos 2 GB; `qwen2.5:14b` pesa unos 9 GB). El modelo queda en el volumen `ollama_data`, así que solo se descarga una vez. En Docker Desktop para Mac el contenedor usa CPU (sin GPU de Apple), por lo que las respuestas son más lentas.
 
+**Nota:** el contenedor `ollama` no publica puerto en el host. El comando `ollama` de la terminal del host habla con el Ollama nativo, no con el contenedor; para el contenedor usa `docker compose exec ollama ollama ...` (por ejemplo `list`).
+
 **Camino B: Ollama nativo.** Instala Ollama, ejecuta `ollama pull llama3.2:3b` y en `.env` pon `OLLAMA_URL=http://host.docker.internal:11434`. Arranca con `docker compose up` (sin profile); en Mac usa la GPU.
 
 ## Configuración

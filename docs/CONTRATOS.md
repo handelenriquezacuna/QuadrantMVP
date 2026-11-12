@@ -27,7 +27,7 @@ Fuente única de verdad entre módulos. Solo el Dictador la modifica. Cada tarea
 - `ingest`: `command: python -m ingest.ingestar`, `depends_on: qdrant: service_healthy`, `restart: "no"`.
 - `app`: `command: streamlit run app/main.py --server.port 8501 --server.address 0.0.0.0`, puerto `8501:8501`, `depends_on: ingest: service_completed_successfully`, `extra_hosts: ["host.docker.internal:host-gateway"]`.
 - **Profile `llm` (opcional):**
-  - `ollama`: imagen `ollama/ollama:0.40.16` (amd64+arm64), `profiles: [llm]`, volumen nombrado `ollama_data:/root/.ollama`, puerto `11434:11434`, healthcheck con `ollama list`.
+  - `ollama`: imagen `ollama/ollama:0.40.16` (amd64+arm64), `profiles: [llm]`, volumen nombrado `ollama_data:/root/.ollama`, **sin publicar puerto en el host** (D-24), healthcheck con `ollama list`.
   - `ollama-pull`: misma imagen, `profiles: [llm]`, una sola ejecución: `ollama pull ${OLLAMA_MODEL}` con `OLLAMA_HOST=http://ollama:11434`, `depends_on: ollama: service_healthy`, `restart: "no"`. Idempotente (si el modelo ya está, termina rápido).
   - `app` declara `depends_on: ollama-pull: {condition: service_completed_successfully, required: false}` para que sin el profile siga arrancando.
   - Sin el profile y sin Ollama nativo, `disponible()` es falso y la pestaña 5 muestra el benchmark grabado.

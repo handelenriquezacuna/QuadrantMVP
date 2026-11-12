@@ -45,8 +45,7 @@ services:
   ollama:
     image: ollama/ollama:0.40.16
     profiles: [llm]
-    ports:
-      - "11434:11434"
+    # Sin puerto publicado en el host: convive con un Ollama nativo.
     volumes:
       - ollama_data:/root/.ollama
     healthcheck:
