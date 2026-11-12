@@ -73,8 +73,10 @@ def test_cache_respeta_umbral(faq_real):
     from qdrant_client import models
     pregunta = "prueba-test: How do I reset my password?"
     v = embed_denso([pregunta])[0]
+    antes = b.cache_contar()
     b.cache_guardar(pregunta, v, "Use el enlace.", "ACCOUNT", "recover_password", "prueba")
     try:
+        assert b.cache_contar() == antes + 1
         hit = b.cache_buscar(v, 0.92)
         assert hit and hit.response == "Use el enlace."
         otro = embed_denso(["Where is the nearest pizza restaurant?"])[0]

@@ -131,3 +131,17 @@ def cache_guardar(pregunta: str, vector: list[float], respuesta: str,
         payload={"pregunta": pregunta, "respuesta": respuesta, "category": category,
                  "intent": intent, "modelo": modelo,
                  "creado_en": datetime.now(timezone.utc).isoformat()})], wait=True)
+
+
+def cache_contar() -> int:
+    """Número de respuestas guardadas en answer_cache."""
+    return get_client().count(ANSWER_CACHE, exact=True).count
+
+
+def cache_vaciar() -> int:
+    """Borra todas las respuestas de answer_cache (no toca faq_kb); devuelve cuántas había."""
+    n = cache_contar()
+    if n:
+        get_client().delete(ANSWER_CACHE, points_selector=models.FilterSelector(
+            filter=models.Filter()), wait=True)
+    return n

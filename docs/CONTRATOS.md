@@ -92,6 +92,8 @@ def listar_valores(campo: str, category: str | None = None) -> list[str]     # f
 def obtener_punto(id: int) -> Resultado | None
 def cache_buscar(vector: list[float], umbral: float) -> Resultado | None     # top-1 en answer_cache; None si score < umbral. instruction=pregunta, response=respuesta
 def cache_guardar(pregunta: str, vector: list[float], respuesta: str, category: str, intent: str, modelo: str) -> None
+def cache_contar() -> int                                                   # puntos en answer_cache
+def cache_vaciar() -> int                                                  # borra todo answer_cache (nunca faq_kb); devuelve cuántos había
 ```
 
 ## §6 Ingesta (`ingest/`, dueño: dev-datos)
@@ -155,7 +157,7 @@ columnas `pregunta_id, pregunta, grupo (original|parafrasis), modo (con_qdrant|s
 - Pestaña 2: selectores de `category`/`intent` desde `listar_valores` → `buscar_denso` filtrado vs sin filtro.
 - Pestaña 3: tres columnas denso / disperso / híbrido; resalta IDs que aparecen en una sola columna.
 - Pestaña 4: elegir ejemplos positivos y negativos (de resultados de búsqueda) y estrategia → `recomendar`.
-- Pestaña 5: si `disponible()` es falso → aviso + gráficos de `BENCHMARK_PATH`. Si es verdadero → consulta en ambos modos, tabla por nodo, KPIs (tokens totales, % ahorro, tasa de aciertos de caché, latencia, costo USD con selector de referencia de `pricing.yaml`), y también los gráficos del benchmark grabado.
+- Pestaña 5: si `disponible()` es falso → aviso + gráficos de `BENCHMARK_PATH`. Si es verdadero → consulta en ambos modos, tabla por nodo, KPIs (tokens totales, % ahorro, tasa de aciertos de caché, latencia, costo USD con selector de referencia de `pricing.yaml`), y también los gráficos del benchmark grabado. Con Ollama, muestra el número de respuestas en caché y un botón **Vaciar caché** (`cache_vaciar`). KPIs del benchmark: tokens medios con / sin, % ahorro, caché en paráfrasis (aciertos / total), categoría correcta con / sin; totales y costo en una nota.
 - Pestaña 6: `listar_colecciones`, `info_coleccion` de ambas (HNSW, cuantización, memoria estimada float32 vs int8), enlace al dashboard, botón que ejecuta `probar_api_key` y muestra 401/403 sin clave vs 200 con clave.
 
 ## §9 Tests (`tests/`)

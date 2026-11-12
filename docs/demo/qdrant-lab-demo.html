@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qdrant Lab, del cero al MVP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Plan: página de estudio técnico; columna de lectura con figuras anchas; tinta azul pizarra, acento verde azulado para Qdrant, ámbar para lo que cuesta tokens de LLM. */
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --ink: #17212b;
+  --muted: #56646f;
+  --line: #cfd8df;
+  --accent: #0b7f78;
+  --accent-soft: #dff1ef;
+  --llm: #b45f06;
+  --llm-soft: #fbecd9;
+  --display: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11171d; --surface: #18212a; --ink: #e4ebf0; --muted: #9aa9b5; --line: #2d3a46;
+    --accent: #3cc2b8; --accent-soft: #143633; --llm: #f0a14a; --llm-soft: #3a2a17; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11171d; --surface: #18212a; --ink: #e4ebf0; --muted: #9aa9b5; --line: #2d3a46;
+  --accent: #3cc2b8; --accent-soft: #143633; --llm: #f0a14a; --llm-soft: #3a2a17; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 400 17px/1.6 var(--body); }
+main { max-width: 1040px; margin: 0 auto; padding: 40px 20px 80px; display: grid; gap: 56px; }
+.prose { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: 2.3rem; font-weight: 800; }
+h2 { font-size: 1.55rem; font-weight: 800; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; }
+section { display: grid; gap: 18px; }
+.step { font: 600 .8rem/1 var(--mono); color: var(--accent); letter-spacing: .04em; }
+.lead { font-size: 1.15rem; color: var(--muted); }
+code, .mono { font-family: var(--mono); font-size: .88em; }
+code { background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 12px; overflow-x: auto; }
+figure svg { width: 100%; height: auto; min-width: 640px; color: var(--ink); display: block; }
+figcaption { color: var(--muted); font-size: .95rem; max-width: 80ch; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 6px; align-content: start; }
+.card p { color: var(--muted); font-size: .95rem; }
+.card .term { font: 600 .78rem/1 var(--mono); color: var(--accent); }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.timeline li { display: grid; grid-template-columns: 64px 1fr; gap: 16px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 14px 16px; }
+.timeline li.llm { border-left-color: var(--llm); }
+.timeline .t { font: 600 1rem/1.3 var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; }
+.timeline li.llm .t { color: var(--llm); }
+.timeline .body { display: grid; gap: 6px; }
+.row { display: grid; grid-template-columns: 9.5em 1fr; gap: 10px; font-size: .96rem; }
+.row b { font-weight: 600; color: var(--muted); }
+.num { font: 600 .95rem/1.4 var(--mono); color: var(--ink); background: var(--accent-soft); border-radius: 6px; padding: 6px 10px; }
+.llm .num { background: var(--llm-soft); }
+.tiles { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; }
+.tile .v { font: 800 1.8rem/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.tile .k { color: var(--muted); font-size: .9rem; }
+pre { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; font: 400 .9rem/1.6 var(--mono); }
+.two { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+ul.check { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.note { border-left: 4px solid var(--llm); background: var(--llm-soft); padding: 12px 14px; border-radius: 6px; }
+.src { color: var(--muted); font-size: .85rem; }
+@media (max-width: 520px) { .row { grid-template-columns: 1fr; gap: 2px; } .timeline li { grid-template-columns: 1fr; } h1 { font-size: 1.8rem; } }
+</style>
+</head>
+<body>
+<main>
+
+<header class="prose" style="display:grid;gap:12px">
+  <span class="step">PRÁCTICA No.3 · BASES DE DATOS NoSQL</span>
+  <h1>Qdrant Lab: del cero al MVP</h1>
+  <p class="lead">Qué es una base de datos vectorial, cómo está armado el MVP y qué mostrar en cada uno de los 4 minutos de la demo, con los números medidos que hay que señalar.</p>
+</header>
+
+<!-- 1 -->
+<section>
+  <span class="step">1 · QUÉ ES QDRANT</span>
+  <h2>Una base de datos que busca por significado</h2>
+  <div class="prose" style="display:grid;gap:12px">
+    <p>Qdrant es una base de datos NoSQL de código abierto especializada en <strong>vectores</strong>. Una base relacional busca filas que coinciden con un valor exacto; Qdrant busca los puntos <strong>más parecidos</strong> a una consulta.</p>
+    <p>Para eso, un modelo de <em>embeddings</em> convierte cada texto en una lista de números (aquí, 384). Textos con significado parecido quedan cerca en ese espacio, aunque estén en idiomas distintos o no compartan ninguna palabra.</p>
+  </div>
+  <figure>
+    <svg viewBox="0 0 900 300" role="img" aria-label="Un texto en español y uno en inglés se convierten en vectores que quedan cerca en el espacio vectorial, con similitud coseno 0.807.">
+      <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <g font-family="Source Sans 3, sans-serif" font-size="13" fill="currentColor">
+        <rect x="10" y="60" width="250" height="56" rx="8" fill="none" stroke="currentColor" opacity=".5"/>
+        <text x="22" y="83" font-weight="600">Consulta (español)</text>
+        <text x="22" y="103">"quiero que me devuelvan el dinero…"</text>
+        <rect x="10" y="180" width="250" height="56" rx="8" fill="none" stroke="currentColor" opacity=".5"/>
+        <text x="22" y="203" font-weight="600">FAQ guardada (inglés)</text>
+        <text x="22" y="223">"I would like to obtain my money back"</text>
+        <line x1="262" y1="88" x2="378" y2="140" stroke="currentColor" marker-end="url(#a1)"/>
+        <line x1="262" y1="208" x2="378" y2="160" stroke="currentColor" marker-end="url(#a1)"/>
+        <rect x="382" y="118" width="150" height="64" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/>
+        <text x="457" y="145" text-anchor="middle" font-weight="600">modelo multilingüe</text>
+        <text x="457" y="165" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12">384 números</text>
+        <line x1="534" y1="150" x2="600" y2="150" stroke="currentColor" marker-end="url(#a1)"/>
+        <rect x="604" y="20" width="286" height="260" rx="8" fill="none" stroke="currentColor" opacity=".35"/>
+        <text x="618" y="42" font-weight="600">espacio vectorial (vista 2D)</text>
+        <g opacity=".45">
+          <circle cx="660" cy="220" r="5" fill="currentColor"/><circle cx="676" cy="236" r="5" fill="currentColor"/><circle cx="648" cy="244" r="5" fill="currentColor"/>
+          <text x="640" y="266" font-size="12">ORDER</text>
+          <circle cx="842" cy="80" r="5" fill="currentColor"/><circle cx="826" cy="66" r="5" fill="currentColor"/><circle cx="856" cy="98" r="5" fill="currentColor"/>
+          <text x="808" y="120" font-size="12">SHIPPING</text>
+        </g>
+        <circle cx="760" cy="160" r="6" fill="var(--accent)"/><circle cx="778" cy="176" r="6" fill="var(--accent)"/><circle cx="748" cy="182" r="6" fill="var(--accent)"/>
+        <text x="736" y="210" font-size="12" fill="var(--accent)" font-weight="600">REFUND</text>
+        <circle cx="730" cy="140" r="7" fill="none" stroke="var(--llm)" stroke-width="2.5"/>
+        <text x="652" y="136" font-size="12" fill="var(--llm)" font-weight="600">consulta</text>
+        <line x1="736" y1="145" x2="756" y2="157" stroke="var(--llm)" stroke-dasharray="3 3"/>
+        <text x="780" y="148" font-size="12" font-family="JetBrains Mono, monospace">coseno 0.807</text>
+      </g>
+    </svg>
+    <figcaption>La consulta en español cae junto a las FAQs de reembolso en inglés. Qdrant mide esa cercanía con la similitud coseno: 1 es idéntico y 0 no tiene relación. El 0.807 es el valor real que muestra la pestaña 1.</figcaption>
+  </figure>
+</section>
+
+<!-- 2 -->
+<section>
+  <span class="step">2 · VOCABULARIO</span>
+  <h2>Ocho conceptos que aparecen en la demo</h2>
+  <figure>
+    <svg viewBox="0 0 900 170" role="img" aria-label="Un punto de Qdrant tiene un id, un vector denso, un vector disperso BM25 y un payload con datos JSON.">
+      <g font-family="Source Sans 3, sans-serif" font-size="13" fill="currentColor">
+        <text x="10" y="22" font-weight="600">Un punto de la colección faq_kb</text>
+        <rect x="10" y="36" width="110" height="110" rx="8" fill="none" stroke="currentColor" opacity=".5"/>
+        <text x="65" y="80" text-anchor="middle" font-weight="600">id</text>
+        <text x="65" y="104" text-anchor="middle" font-family="JetBrains Mono, monospace">1251</text>
+        <rect x="132" y="36" width="230" height="110" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/>
+        <text x="146" y="62" font-weight="600">vector "dense"</text>
+        <text x="146" y="86" font-family="JetBrains Mono, monospace" font-size="12">[0.021, -0.113, 0.047, …]</text>
+        <text x="146" y="108" font-size="12" opacity=".8">384 números · significado</text>
+        <text x="146" y="128" font-size="12" opacity=".8">coseno, índice HNSW</text>
+        <rect x="374" y="36" width="230" height="110" rx="8" fill="none" stroke="var(--accent)" stroke-dasharray="5 4"/>
+        <text x="388" y="62" font-weight="600">vector "bm25" (disperso)</text>
+        <text x="388" y="86" font-family="JetBrains Mono, monospace" font-size="12">{refund: 1.4, order: 0.9}</text>
+        <text x="388" y="108" font-size="12" opacity=".8">solo palabras presentes</text>
+        <text x="388" y="128" font-size="12" opacity=".8">palabras clave, IDF</text>
+        <rect x="616" y="36" width="274" height="110" rx="8" fill="none" stroke="currentColor" opacity=".5"/>
+        <text x="630" y="62" font-weight="600">payload (JSON)</text>
+        <text x="630" y="84" font-family="JetBrains Mono, monospace" font-size="12">category: "REFUND"</text>
+        <text x="630" y="102" font-family="JetBrains Mono, monospace" font-size="12">intent: "get_refund"</text>
+        <text x="630" y="120" font-family="JetBrains Mono, monospace" font-size="12">instruction, response</text>
+        <text x="630" y="138" font-size="12" opacity=".8">filtrable con índices</text>
+      </g>
+    </svg>
+    <figcaption>Cada FAQ del dataset se guarda como un punto con dos vectores con nombre y sus datos en el payload. Es un modelo de documentos, como en otras bases NoSQL, más vectores.</figcaption>
+  </figure>
+  <div class="grid">
+    <div class="card"><span class="term">COLECCIÓN</span><h3>Como una tabla</h3><p>Conjunto de puntos con la misma configuración. El MVP usa <code>faq_kb</code> (3,000 FAQs) y <code>answer_cache</code> (respuestas ya generadas).</p></div>
+    <div class="card"><span class="term">VECTOR DENSO</span><h3>Significado</h3><p>Encuentra textos parecidos aunque no compartan palabras ni idioma.</p></div>
+    <div class="card"><span class="term">VECTOR DISPERSO</span><h3>Palabras clave (BM25)</h3><p>Acierta con términos exactos como números de pedido o nombres propios.</p></div>
+    <div class="card"><span class="term">PAYLOAD + ÍNDICE</span><h3>Filtros</h3><p>Datos JSON del punto. Con índices sobre <code>category</code> e <code>intent</code> se filtra durante la búsqueda vectorial.</p></div>
+    <div class="card"><span class="term">HÍBRIDA + RRF</span><h3>Lo mejor de ambos</h3><p>Corre denso y BM25 y fusiona los rankings con Reciprocal Rank Fusion en una sola consulta.</p></div>
+    <div class="card"><span class="term">RECOMENDACIÓN</span><h3>Más como esto</h3><p>Busca puntos cercanos a ejemplos positivos y lejos de los negativos.</p></div>
+    <div class="card"><span class="term">HNSW + CUANTIZACIÓN</span><h3>Velocidad y memoria</h3><p>HNSW es un grafo que evita comparar contra todo. La cuantización int8 guarda cada número en 1 byte en vez de 4.</p></div>
+    <div class="card"><span class="term">API KEY</span><h3>Seguridad</h3><p>Sin la clave, Qdrant responde 401 y no entrega datos.</p></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section>
+  <span class="step">3 · ARQUITECTURA</span>
+  <h2>Cómo está armado el MVP</h2>
+  <p class="prose">Todo corre con <code>docker compose up</code> en Mac, Windows o Linux, con Docker Desktop como único requisito. El LLM es opcional y tiene dos caminos.</p>
+  <figure>
+    <svg viewBox="0 0 960 470" role="img" aria-label="Arquitectura: el dataset Bitext alimenta el servicio de ingesta, que escribe en Qdrant. La app Streamlit consulta Qdrant y, de forma opcional, llama a Ollama en un contenedor o nativo en el host.">
+      <defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <g font-family="Source Sans 3, sans-serif" font-size="13" fill="currentColor">
+        <!-- navegador -->
+        <rect x="380" y="8" width="200" height="44" rx="8" fill="none" stroke="currentColor"/>
+        <text x="480" y="35" text-anchor="middle" font-weight="600">Navegador · localhost:8501</text>
+        <!-- dataset -->
+        <rect x="10" y="190" width="150" height="76" rx="8" fill="none" stroke="currentColor" opacity=".6"/>
+        <text x="85" y="216" text-anchor="middle" font-weight="600">Dataset Bitext</text>
+        <text x="85" y="236" text-anchor="middle" font-size="12">muestra parquet</text>
+        <text x="85" y="254" text-anchor="middle" font-size="12">3,000 FAQs (inglés)</text>
+        <!-- compose -->
+        <rect x="190" y="80" width="560" height="380" rx="12" fill="none" stroke="currentColor" stroke-dasharray="6 5" opacity=".6"/>
+        <text x="206" y="102" font-weight="600" opacity=".8">Docker Compose</text>
+        <!-- ingest -->
+        <rect x="214" y="186" width="160" height="84" rx="8" fill="var(--surface)" stroke="currentColor"/>
+        <text x="294" y="212" text-anchor="middle" font-weight="600">ingest</text>
+        <text x="294" y="232" text-anchor="middle" font-size="12">una sola ejecución</text>
+        <text x="294" y="250" text-anchor="middle" font-size="12">fastembed (CPU)</text>
+        <!-- app -->
+        <rect x="400" y="110" width="160" height="110" rx="8" fill="var(--surface)" stroke="currentColor"/>
+        <text x="480" y="136" text-anchor="middle" font-weight="600">app (Streamlit)</text>
+        <text x="480" y="156" text-anchor="middle" font-size="12">6 pestañas</text>
+        <text x="480" y="174" text-anchor="middle" font-size="12">fastembed + LangGraph</text>
+        <text x="480" y="192" text-anchor="middle" font-size="12">métricas de tokens</text>
+        <!-- qdrant -->
+        <rect x="400" y="290" width="160" height="150" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="480" y="316" text-anchor="middle" font-weight="700">Qdrant v1.20.0</text>
+        <text x="480" y="340" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12">faq_kb</text>
+        <text x="480" y="358" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12">answer_cache</text>
+        <text x="480" y="382" text-anchor="middle" font-size="12">API key · volumen</text>
+        <text x="480" y="400" text-anchor="middle" font-size="12">:6333/dashboard</text>
+        <!-- ollama contenedor -->
+        <rect x="586" y="290" width="148" height="110" rx="8" fill="none" stroke="var(--llm)" stroke-dasharray="5 4"/>
+        <text x="660" y="316" text-anchor="middle" font-weight="600" fill="var(--llm)">ollama</text>
+        <text x="660" y="336" text-anchor="middle" font-size="12">profile llm</text>
+        <text x="660" y="354" text-anchor="middle" font-size="12">CPU, sin instalar nada</text>
+        <text x="660" y="372" text-anchor="middle" font-size="12">opción A</text>
+        <!-- ollama nativo -->
+        <rect x="790" y="110" width="160" height="110" rx="8" fill="none" stroke="var(--llm)" stroke-width="2"/>
+        <text x="870" y="136" text-anchor="middle" font-weight="600" fill="var(--llm)">Ollama nativo</text>
+        <text x="870" y="156" text-anchor="middle" font-size="12">en el host</text>
+        <text x="870" y="174" text-anchor="middle" font-size="12">GPU (Mac M4 Max)</text>
+        <text x="870" y="192" text-anchor="middle" font-size="12">opción B</text>
+        <!-- flechas -->
+        <line x1="162" y1="228" x2="210" y2="228" stroke="currentColor" marker-end="url(#a3)"/>
+        <text x="186" y="220" text-anchor="middle" font-size="11">lee</text>
+        <polyline points="294,272 294,365 396,365" fill="none" stroke="currentColor" marker-end="url(#a3)"/>
+        <text x="300" y="352" font-size="11">upsert 3,000 puntos</text>
+        <line x1="480" y1="54" x2="480" y2="106" stroke="currentColor" marker-end="url(#a3)"/>
+        <line x1="470" y1="222" x2="470" y2="286" stroke="currentColor" marker-end="url(#a3)"/>
+        <text x="462" y="258" text-anchor="end" font-size="11">busca, filtra</text>
+        <line x1="494" y1="286" x2="494" y2="224" stroke="currentColor" marker-end="url(#a3)"/>
+        <text x="502" y="258" font-size="11">resultados</text>
+        <polyline points="562,190 640,190 640,286" fill="none" stroke="var(--llm)" stroke-dasharray="5 4" marker-end="url(#a3)"/>
+        <text x="648" y="250" font-size="11" fill="var(--llm)">ollama:11434</text>
+        <line x1="562" y1="150" x2="786" y2="150" stroke="var(--llm)" marker-end="url(#a3)"/>
+        <text x="674" y="142" text-anchor="middle" font-size="11" fill="var(--llm)">host.docker.internal:11434</text>
+      </g>
+    </svg>
+    <figcaption>El servicio <code>ingest</code> embebe las 3,000 FAQs y las carga en Qdrant (11 s medidos en la certificación) y termina. La app arranca después. Las pestañas 1–4 y 6 solo hablan con Qdrant. La pestaña 5 usa además un LLM: el contenedor del <em>profile</em> <code>llm</code> (opción A) u Ollama nativo (opción B), según <code>OLLAMA_URL</code> en <code>.env</code>.</figcaption>
+  </figure>
+</section>
+
+<!-- 4 -->
+<section>
+  <span class="step">4 · EL CASO REAL</span>
+  <h2>Un asistente de soporte que gasta menos tokens</h2>
+  <p class="prose">La pestaña 5 compara dos formas de responder un ticket. <strong>Sin Qdrant</strong>, el LLM tiene que leer muchas FAQs en cada pregunta. <strong>Con Qdrant</strong>, la base hace el trabajo barato: reconoce preguntas ya respondidas y elige solo 3 FAQs relevantes.</p>
+  <figure>
+    <svg viewBox="0 0 960 330" role="img" aria-label="Flujo con Qdrant: triage revisa la caché semántica; si acierta responde con 0 tokens, si no, retriever busca 3 FAQs y el LLM responde y verifica. Flujo sin Qdrant: el LLM clasifica y lee 30 FAQs en el prompt.">
+      <defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <g font-family="Source Sans 3, sans-serif" font-size="13" fill="currentColor">
+        <text x="10" y="24" font-weight="700" fill="var(--accent)">CON QDRANT (grafo LangGraph)</text>
+        <rect x="10" y="44" width="110" height="56" rx="8" fill="none" stroke="currentColor"/>
+        <text x="65" y="77" text-anchor="middle" font-weight="600">pregunta</text>
+        <rect x="150" y="38" width="170" height="68" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/>
+        <text x="235" y="62" text-anchor="middle" font-weight="600">1 · triage</text>
+        <text x="235" y="80" text-anchor="middle" font-size="12">busca en answer_cache</text>
+        <text x="235" y="96" text-anchor="middle" font-size="12" font-family="JetBrains Mono, monospace">0 tokens</text>
+        <rect x="350" y="38" width="170" height="68" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/>
+        <text x="435" y="62" text-anchor="middle" font-weight="600">2 · retriever</text>
+        <text x="435" y="80" text-anchor="middle" font-size="12">3 FAQs, filtro category</text>
+        <text x="435" y="96" text-anchor="middle" font-size="12" font-family="JetBrains Mono, monospace">0 tokens</text>
+        <rect x="550" y="38" width="170" height="68" rx="8" fill="var(--llm-soft)" stroke="var(--llm)"/>
+        <text x="635" y="62" text-anchor="middle" font-weight="600">3 · responder</text>
+        <text x="635" y="80" text-anchor="middle" font-size="12">LLM con 3 FAQs</text>
+        <text x="635" y="96" text-anchor="middle" font-size="12" fill="var(--llm)">tokens</text>
+        <rect x="750" y="38" width="200" height="68" rx="8" fill="var(--llm-soft)" stroke="var(--llm)"/>
+        <text x="850" y="62" text-anchor="middle" font-weight="600">4 · QA</text>
+        <text x="850" y="80" text-anchor="middle" font-size="12">¿fundamentada? SI → guarda</text>
+        <text x="850" y="96" text-anchor="middle" font-size="12" fill="var(--llm)">pocos tokens</text>
+        <line x1="122" y1="72" x2="146" y2="72" stroke="currentColor" marker-end="url(#a4)"/>
+        <line x1="322" y1="72" x2="346" y2="72" stroke="currentColor" marker-end="url(#a4)"/>
+        <text x="334" y="122" text-anchor="middle" font-size="11">no acierta</text>
+        <line x1="522" y1="72" x2="546" y2="72" stroke="currentColor" marker-end="url(#a4)"/>
+        <line x1="722" y1="72" x2="746" y2="72" stroke="currentColor" marker-end="url(#a4)"/>
+        <line x1="235" y1="108" x2="235" y2="150" stroke="var(--accent)" stroke-width="2" marker-end="url(#a4)"/>
+        <text x="244" y="134" font-size="11" fill="var(--accent)">acierta (coseno ≥ 0.92)</text>
+        <rect x="150" y="154" width="170" height="44" rx="8" fill="var(--accent)" stroke="none"/>
+        <text x="235" y="181" text-anchor="middle" font-weight="700" fill="var(--surface)">respuesta guardada · 0 tokens</text>
+        <polyline points="850,108 850,176 324,176" fill="none" stroke="currentColor" stroke-dasharray="4 4" marker-end="url(#a4)"/>
+        <text x="600" y="170" text-anchor="middle" font-size="11">guarda en answer_cache para la próxima paráfrasis</text>
+        <line x1="10" y1="222" x2="950" y2="222" stroke="currentColor" opacity=".2"/>
+        <text x="10" y="250" font-weight="700" fill="var(--llm)">SIN QDRANT (comparación)</text>
+        <rect x="10" y="264" width="110" height="56" rx="8" fill="none" stroke="currentColor"/>
+        <text x="65" y="297" text-anchor="middle" font-weight="600">pregunta</text>
+        <rect x="150" y="264" width="220" height="56" rx="8" fill="var(--llm-soft)" stroke="var(--llm)"/>
+        <text x="260" y="288" text-anchor="middle" font-weight="600">LLM clasifica la categoría</text>
+        <text x="260" y="306" text-anchor="middle" font-size="12" fill="var(--llm)">tokens</text>
+        <rect x="400" y="264" width="320" height="56" rx="8" fill="var(--llm-soft)" stroke="var(--llm)"/>
+        <text x="560" y="288" text-anchor="middle" font-weight="600">LLM responde leyendo 30 FAQs</text>
+        <text x="560" y="306" text-anchor="middle" font-size="12" fill="var(--llm)">prompt de ~2,600 a ~8,200 tokens</text>
+        <line x1="122" y1="292" x2="146" y2="292" stroke="currentColor" marker-end="url(#a4)"/>
+        <line x1="372" y1="292" x2="396" y2="292" stroke="currentColor" marker-end="url(#a4)"/>
+      </g>
+    </svg>
+    <figcaption>Los nodos en verde azulado los resuelve Qdrant sin gastar tokens; los ámbar llaman al LLM. Los tokens se cuentan con los valores reales que devuelve Ollama (<code>prompt_eval_count</code> y <code>eval_count</code>), no con estimaciones.</figcaption>
+  </figure>
+</section>
+
+<!-- 5 -->
+<section>
+  <span class="step">5 · RESULTADOS MEDIDOS</span>
+  <h2>Benchmark grabado: 100 preguntas en cada modo</h2>
+  <p class="prose">50 preguntas en español y 50 paráfrasis de esas mismas preguntas, respondidas con <code>llama3.2:3b</code> en Ollama nativo sobre la GPU de la Mac M4 Max: 200 corridas, 0 fallos.</p>
+  <figure>
+    <svg viewBox="0 0 900 150" role="img" aria-label="Tokens totales: 76,760 con Qdrant frente a 421,047 sin Qdrant, un ahorro de 81.8 por ciento.">
+      <g font-family="Source Sans 3, sans-serif" font-size="13" fill="currentColor">
+        <line x1="150" y1="20" x2="150" y2="122" stroke="currentColor" opacity=".3"/>
+        <line x1="344" y1="20" x2="344" y2="122" stroke="currentColor" opacity=".12"/>
+        <line x1="538" y1="20" x2="538" y2="122" stroke="currentColor" opacity=".12"/>
+        <line x1="732" y1="20" x2="732" y2="122" stroke="currentColor" opacity=".12"/>
+        <text x="140" y="52" text-anchor="end" font-weight="600">Con Qdrant</text>
+        <rect x="150" y="34" width="74" height="28" rx="3" fill="var(--accent)"/>
+        <text x="232" y="53" font-family="JetBrains Mono, monospace" font-weight="600">76,760</text>
+        <text x="140" y="98" text-anchor="end" font-weight="600">Sin Qdrant</text>
+        <rect x="150" y="80" width="408" height="28" rx="3" fill="var(--llm)"/>
+        <text x="566" y="99" font-family="JetBrains Mono, monospace" font-weight="600">421,047</text>
+        <text x="150" y="140" text-anchor="middle" font-size="11" opacity=".7">0</text>
+        <text x="344" y="140" text-anchor="middle" font-size="11" opacity=".7">200k</text>
+        <text x="538" y="140" text-anchor="middle" font-size="11" opacity=".7">400k</text>
+        <text x="732" y="140" text-anchor="middle" font-size="11" opacity=".7">600k</text>
+        <text x="890" y="140" text-anchor="end" font-size="11" opacity=".7">tokens totales (entrada + salida)</text>
+      </g>
+    </svg>
+    <figcaption>Para responder las mismas 100 preguntas, el modo con Qdrant consumió 81.8 % menos tokens.</figcaption>
+  </figure>
+  <div class="tiles">
+    <div class="tile"><span class="v" style="color:var(--accent)">81.8 %</span><span class="k">menos tokens con Qdrant</span></div>
+    <div class="tile"><span class="v">32 / 50</span><span class="k">paráfrasis respondidas desde la caché, con 0 tokens (64 %)</span></div>
+    <div class="tile"><span class="v">2.2 s <span style="font-size:1rem;color:var(--muted)">vs</span> 3.9 s</span><span class="k">latencia media por pregunta</span></div>
+    <div class="tile"><span class="v">82 % <span style="font-size:1rem;color:var(--muted)">vs</span> 54 %</span><span class="k">categoría correcta: voto de vecinos en Qdrant vs LLM solo</span></div>
+  </div>
+  <p class="src">Fuente: <code>data/benchmark_grabado.csv</code> del repo (decisión D-25). Una pregunta sin Qdrant quedó sin categoría reconocida, lo que hace el ahorro ligeramente conservador.</p>
+</section>
+
+<!-- 6 -->
+<section>
+  <span class="step">6 · GUION DE LA DEMO</span>
+  <h2>Los 4 minutos, pestaña por pestaña</h2>
+  <ol class="timeline">
+    <li><span class="t">0:00</span><div class="body"><h3>Arranque</h3>
+      <div class="row"><b>Qué hacer</b><span>Mostrar que un solo comando levanta todo: <code>docker compose up</code>.</span></div>
+      <div class="row"><b>Qué demuestra</b><span>La ingesta crea las colecciones y carga las FAQs sin pasos manuales.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">3,000 FAQs cargadas en 11 s · app lista en 53 s</span></div></div></li>
+    <li><span class="t">0:30</span><div class="body"><h3>1 · Búsqueda semántica</h3>
+      <div class="row"><b>Qué hacer</b><span>Buscar "quiero que me devuelvan el dinero de mi compra".</span></div>
+      <div class="row"><b>Qué demuestra</b><span>El vector denso entiende el significado entre idiomas; la búsqueda por palabra exacta no encuentra nada.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">coseno 0.807 con "I would like to obtain my money back" vs 0 resultados</span></div></div></li>
+    <li><span class="t">1:15</span><div class="body"><h3>2 · Filtros</h3>
+      <div class="row"><b>Qué hacer</b><span>Elegir una <code>category</code> y comparar las columnas "Sin filtro" y "Con filtro".</span></div>
+      <div class="row"><b>Qué demuestra</b><span>El payload index acota la búsqueda vectorial a una categoría o intención.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">resultados de otras categorías: los que aparezcan sin filtro vs 0 con filtro, y los ms de cada columna</span></div></div></li>
+    <li><span class="t">1:45</span><div class="body"><h3>3 · Búsqueda híbrida</h3>
+      <div class="row"><b>Qué hacer</b><span>Buscar "refund order 12345" y comparar denso, BM25 e híbrida.</span></div>
+      <div class="row"><b>Qué demuestra</b><span>Cada método encuentra cosas distintas; RRF combina los dos rankings.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">denso y BM25 no comparten ningún ID · la híbrida mezcla resultados de ambas columnas (no recitar IDs: BM25 tiene empates y su orden puede variar)</span></div></div></li>
+    <li><span class="t">2:15</span><div class="body"><h3>4 · Recomendaciones</h3>
+      <div class="row"><b>Qué hacer</b><span>Marcar ejemplos positivos y negativos y elegir una estrategia.</span></div>
+      <div class="row"><b>Qué demuestra</b><span>"Más como esto, menos como aquello" sin escribir una consulta.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">score del primer resultado · 0 ejemplos repetidos en los resultados</span></div></div></li>
+    <li class="llm"><span class="t">2:45</span><div class="body"><h3>5 · Caso de soporte</h3>
+      <div class="row"><b>Qué hacer</b><span>Con la caché recién vaciada, preguntar "¿Cómo cambio mi dirección de envío?" (caché: fallo) y después "¿Cómo puedo cambiar mi dirección de envío?". Mostrar los gráficos del benchmark.</span></div>
+      <div class="row"><b>Qué demuestra</b><span>La caché semántica responde la paráfrasis sin llamar al LLM; el benchmark muestra el ahorro total.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">2.ª pregunta: caché acierto, 0 tokens (coseno 0.9836) · benchmark en pantalla: 768 vs 4,210 tokens medios (81.8 %), caché 32 / 50, categoría 82 % / 54 %</span></div></div></li>
+    <li><span class="t">3:30</span><div class="body"><h3>6 · Inspector y seguridad</h3>
+      <div class="row"><b>Qué hacer</b><span>Ver la configuración HNSW y la cuantización; pulsar el botón de prueba de API key.</span></div>
+      <div class="row"><b>Qué demuestra</b><span>Cómo Qdrant ahorra memoria y que sin clave no entrega datos.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">memoria estimada ~4 veces menor con int8 · 401 sin clave vs 200 con clave</span></div></div></li>
+  </ol>
+  <p class="note">Si la paráfrasis está más lejos, la caché no acierta: "¿Cómo cancelo mi pedido?" vs "Quiero cancelar mi orden, ¿cómo lo hago?" da 0.8946, debajo del umbral 0.92 (<code>CACHE_THRESHOLD</code>). Sirve como pregunta del público: el umbral equilibra ahorro contra riesgo de devolver una respuesta que no corresponde.</p>
+</section>
+
+<!-- 7 -->
+<section>
+  <span class="step">7 · PONERLO A CORRER</span>
+  <h2>Tres comandos y dos caminos para el LLM</h2>
+<pre>git clone https://github.com/handelenriquezacuna/QuadrantMVP.git
+cd QuadrantMVP && cp .env.example .env      # Windows: copy .env.example .env
+docker compose up</pre>
+  <div class="two">
+    <div class="card"><span class="term">OPCIÓN A · SIN INSTALAR NADA</span><h3>Ollama en contenedor</h3><p><code>docker compose --profile llm up</code>. La primera vez descarga <code>llama3.2:3b</code> (~2 GB) y corre en CPU. Avance con <code>docker compose logs -f ollama-pull</code>.</p></div>
+    <div class="card"><span class="term">OPCIÓN B · RECOMENDADA PARA EXPONER</span><h3>Ollama nativo</h3><p>Instalar Ollama, <code>ollama pull llama3.2:3b</code> y en <code>.env</code> poner <code>OLLAMA_URL=http://host.docker.internal:11434</code>. Usa la GPU de la Mac.</p></div>
+  </div>
+  <div class="card"><span class="term">ANTES DE EXPONER</span>
+    <ul class="check">
+      <li>Levantar el stack una vez antes de la clase para que la descarga de imágenes y modelos ya esté hecha.</li>
+      <li>Dejar Ollama nativo corriendo y hacer una consulta de prueba en la pestaña 5 para cargar el modelo en memoria (la primera tarda más).</li>
+      <li>Justo antes de empezar, pulsar <b>Vaciar caché</b> en la pestaña 5 para que la primera pregunta falle y la paráfrasis acierte frente al público.</li>
+      <li>Al hacer scroll en la pestaña 5, mantener el cursor fuera de los gráficos: la rueda les hace zoom.</li>
+      <li>Tener abierto <code>http://localhost:6333/dashboard</code> por si preguntan cómo se ven las colecciones por dentro.</li>
+      <li>Sin LLM, la pestaña 5 muestra el benchmark grabado: la demo funciona igual.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

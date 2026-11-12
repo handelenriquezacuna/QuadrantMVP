@@ -6,6 +6,7 @@ import pandas as pd
 import streamlit as st
 
 from app.soporte import grafo, metricas, ollama
+from app.store import busquedas
 from app.ui.comun import medir
 
 COLUMNAS = ["pregunta_id", "pregunta", "grupo", "modo", "cache_hit", "tokens_entrada",
@@ -55,12 +56,18 @@ def _graficos_benchmark(referencia: str) -> None:
         costo_usd=("costo_usd", "mean"), cache=("cache_hit", "mean"))
     con = por_modo["tokens"].get("con_qdrant", 0.0)
     sin = por_modo["tokens"].get("sin_qdrant", 0.0)
-    acierto = df[df["modo"] == "con_qdrant"]["cache_hit"].mean() * 100
+    df_con = df[df["modo"] == "con_qdrant"]
+    para = df_con[df_con["grupo"] == "parafrasis"]
+    exacta = (df["category_predicha"] == df["category_real"]).groupby(df["modo"]).mean() * 100
     k = st.columns(4)
-    k[0].metric("Tokens medios con Qdrant", f"{con:.0f}")
+    k[0].metric("Tokens medios con / sin", f"{con:.0f} / {sin:.0f}")
     k[1].metric("Ahorro de tokens", f"{_porcentaje_ahorro(sin, con):.1f} %")
-    k[2].metric("Aciertos de caché", f"{acierto:.1f} %")
-    k[3].metric(f"Costo total USD ({referencia})", f"{df['costo_usd'].sum():.4f}")
+    k[2].metric("Caché en paráfrasis", f"{int(para['cache_hit'].sum())} / {len(para)}")
+    k[3].metric("Categoría correcta con / sin",
+                f"{exacta.get('con_qdrant', 0):.0f} % / {exacta.get('sin_qdrant', 0):.0f} %")
+    st.caption(f"{len(df)} corridas · tokens totales con / sin: "
+               f"{int(df_con['tokens'].sum()):,} / {int(df[df['modo'] == 'sin_qdrant']['tokens'].sum()):,} · "
+               f"costo total USD ({referencia}): {df['costo_usd'].sum():.4f}")
 
     c1, c2, c3 = st.columns(3)
     with c1:
@@ -86,6 +93,16 @@ def _tabla_nodos(res) -> pd.DataFrame:
 
 def _modo_en_vivo(referencia: str) -> None:
     st.subheader("Consulta en vivo")
+    c1, c2 = st.columns([3, 1])
+    try:
+        if c2.button("Vaciar caché", key="t5_vaciar"):
+            n = busquedas.cache_vaciar()
+            st.session_state.pop("t5_res", None)
+            st.toast(f"Caché vaciada: {n} respuestas borradas.")
+        c1.caption(f"Respuestas en caché semántica: {busquedas.cache_contar()} "
+                   f"(umbral {os.environ.get('CACHE_THRESHOLD', '0.92')})")
+    except Exception as e:  # noqa: BLE001
+        c1.caption(f"No se pudo leer la caché: {e}")
     pregunta = st.text_input("Pregunta del cliente", key="t5_pregunta")
     if st.button("Consultar en ambos modos", key="t5_consultar") and pregunta.strip():
         try:
