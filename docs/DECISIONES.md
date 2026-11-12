@@ -18,3 +18,4 @@ Registro corto: fecha, decisión, motivo. Los agentes leen de aquí; no repetir 
 | D-12 | 2026-11-11 | `.claude/agents/` se versiona en el repo | Lo exige la estructura del prompt; los commits no llevan marcas de IA. |
 | D-13 | 2026-11-11 | Se acepta `embed_disperso(..., consulta=False)` y se prohíbe que los tests destruyan colecciones reales | BM25 de consulta difiere del de documento; `docker compose run --rm app pytest` corre contra el Qdrant de la app. |
 | D-14 | 2026-11-11 | `pricing.yaml` usa la clave `modelos` (no `referencias`); `responder_sin_qdrant` acepta `categorias` opcional; `app/ui/comun.py` autorizado | Se alinea el contrato con lo ya aprobado en T-01 y con cambios compatibles de T-04/T-05. |
+| D-15 | 2026-11-11 | Limitación conocida: en `responder_sin_qdrant` la categoría que devuelve el LLM se detecta por subcadena | Observación no bloqueante del Validador en T-05; las 11 categorías de Bitext no son subcadenas entre sí. |
