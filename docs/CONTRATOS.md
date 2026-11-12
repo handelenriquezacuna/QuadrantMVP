@@ -61,7 +61,7 @@ def probar_api_key() -> dict                     # {"sin_clave": int, "clave_inc
 
 # app/store/embeddings.py
 def embed_denso(textos: list[str]) -> list[list[float]]
-def embed_disperso(textos: list[str]) -> list[models.SparseVector]
+def embed_disperso(textos: list[str], consulta: bool = False) -> list[models.SparseVector]   # consulta=True usa query_embed (BM25 de consulta)
 
 # app/store/colecciones.py
 FAQ_KB = "faq_kb"; ANSWER_CACHE = "answer_cache"
@@ -155,6 +155,7 @@ columnas `pregunta_id, pregunta, grupo (original|parafrasis), modo (con_qdrant|s
 
 - Prefijos por dueño: `test_infra_*.py` (dev-infra), `test_store_*.py` y `test_ingest_*.py` (dev-datos), `test_soporte_*.py` y `test_ui_*.py` (dev-app).
 - Tests de integración usan el Qdrant de compose; se marcan con `pytest.mark.integracion` y se saltan con mensaje claro si Qdrant no responde. Ningún test requiere Ollama (se usa LLM falso).
+- Los tests **no destruyen datos**: nunca `crear_colecciones(recrear=True)` sobre `faq_kb`/`answer_cache`. Si `faq_kb` está vacía, la llenan con la ingesta idempotente. Los tests que necesitan colección propia usan nombres con prefijo `test_` y la borran al final. Los puntos que un test guarda en `answer_cache` se eliminan al terminar.
 - `pytest.ini` (dueño: dev-infra) registra el marcador y `testpaths = tests`.
 
 ## §10 Convenciones

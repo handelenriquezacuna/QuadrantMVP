@@ -14,3 +14,6 @@ Registro corto: fecha, decisión, motivo. Los agentes leen de aquí; no repetir 
 | D-08 | 2026-11-11 | `.env.example` trae una API key de desarrollo local no secreta | El criterio 1 exige arrancar con `cp .env.example .env` sin pasos extra. Se documenta que debe cambiarse fuera del aula. |
 | D-09 | 2026-11-11 | Commits sin ninguna marca de IA (sin Co-Authored-By ni pie "Generated with") | Instrucción del dueño del repo. |
 | D-10 | 2026-11-11 | Ollama no está instalado en la máquina de construcción | El benchmark grabado (T-07) debe ser real: requiere instalar Ollama en el host antes de la fase 4. Pendiente de OK del usuario. |
+| D-11 | 2026-11-11 | Los subagentes se invocan como `general-purpose` con `model` fijado por rol y el archivo `.claude/agents/<rol>.md` como instrucciones | La sesión principal no recarga `.claude/agents/` creados después de iniciar; en sesiones nuevas se pueden invocar por nombre. Mismo contexto mínimo y mismas reglas. |
+| D-12 | 2026-11-11 | `.claude/agents/` se versiona en el repo | Lo exige la estructura del prompt; los commits no llevan marcas de IA. |
+| D-13 | 2026-11-11 | Se acepta `embed_disperso(..., consulta=False)` y se prohíbe que los tests destruyan colecciones reales | BM25 de consulta difiere del de documento; `docker compose run --rm app pytest` corre contra el Qdrant de la app. |

@@ -4,6 +4,7 @@ Tokens según los reporta la herramienta de subagentes (`subagent_tokens` del ú
 
 | Tarea | Agente | Modelo | Ciclos de validación | Tokens dev | Tokens validador | Resultado |
 |---|---|---|---|---|---|---|
+| T-03 | dev-datos / validador | sonnet / haiku | 1 (más un ajuste de contrato del Dictador antes de validar) | 47,628 | 44,476 | APROBADO |
 | T-02 | dev-datos / validador | sonnet / haiku | 2 (1 rechazo: faltaba `ingest/__init__.py`) | 30,081 | 33,055 | APROBADO |
 
 ## Totales por agente
