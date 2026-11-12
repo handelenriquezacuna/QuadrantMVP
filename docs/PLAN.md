@@ -10,8 +10,10 @@
 | 2. Explorador | T-04 App Streamlit, pestañas 1, 2, 3, 4 y 6 | dev-app | T-05 | T-01, T-03 |
 | 3. Caso de soporte | T-05 Grafo LangGraph, cliente Ollama, métricas | dev-app | T-04 | T-03 |
 | | T-06 Pestaña 5 (UI + fallback benchmark) | dev-app | T-07 | T-05 |
-| | T-07 Benchmark grabado de 100 preguntas | dev-datos | T-06 | T-05, **Ollama en host** |
+| | T-10 Ollama como servicio opcional (profile `llm`) | dev-infra | T-06 | T-01 |
+| | T-07 Benchmark grabado de 100 preguntas (con el contenedor de Ollama) | dev-datos | — | T-05, T-10 |
 | 4. Documentación | T-08 README (requisitos, 3 comandos, Mermaid, guion 4 min) | dev-infra | — | T-04, T-06 |
+| | T-11 Cifras reales en el guion | dev-infra | — | T-07 |
 | 5. Certificación | T-09 Certificado desde clon limpio | certificador | — | todas |
 
 T-02 y T-03 son del mismo agente pero independientes: se lanzan como dos invocaciones paralelas.
@@ -35,5 +37,5 @@ T-02 y T-03 son del mismo agente pero independientes: se lanzan como dos invocac
 
 ## Riesgos
 
-- **Ollama ausente** en la máquina de construcción → T-07 bloqueada hasta instalarlo (ver D-10).
+- ~~Ollama ausente~~ → resuelto con el profile `llm` (D-17). Latencias del benchmark en CPU (D-18).
 - Tiempo de build: la imagen descarga ~0.3 GB de modelos; ingesta estimada < 30 s para 3,000 filas.
