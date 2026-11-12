@@ -53,7 +53,7 @@ Todo se controla desde `.env` (copia de `.env.example`). Si cambias `DENSE_MODEL
 | 1:15 | 2. Filtros | Elegir `category`/`intent` y comparar con y sin filtro. | Elegir una `category`: de los 5 resultados "Sin filtro", contar cuántos son de otras categorías, frente a 0 "Con filtro"; comparar también los ms de ambas columnas. |
 | 1:45 | 3. Híbrida | Consultar "refund order 12345". Ver IDs que aparecen en una sola columna y la fusión RRF. | 5 IDs exclusivos y 0 comunes a las tres columnas; la híbrida mezcla 3 de BM25 y 2 de denso. |
 | 2:15 | 4. Recomendaciones | Elegir ejemplos positivos y negativos y una estrategia. | El score de similitud del primer resultado; los ejemplos elegidos no se repiten (0 resultados repetidos). |
-| 2:45 | 5. Soporte | Consultar en modo con y sin Qdrant. | Benchmark grabado (llama3.2:3b, Ollama nativo en GPU M4 Max, 200 corridas): ahorro de tokens 81.8 % (76,760 vs 421,047); caché 32/50 paráfrasis (64 %) con 0 tokens; latencia media 2.2 s vs 3.9 s; categoría correcta 82 % vs 54 %. |
+| 2:45 | 5. Soporte | Consultar en modo con y sin Qdrant. | Benchmark grabado (llama3.2:3b, Ollama nativo en GPU M4 Max, 200 corridas): ahorro de tokens 81.8 % (76,760 vs 421,047); caché 32/50 paráfrasis (64 %) con 0 tokens; latencia media 2.2 s vs 3.9 s; categoría correcta 82 % vs 54 %. En vivo, prueba la caché con "¿Cómo cambio mi dirección de envío?" y luego "¿Cómo puedo cambiar mi dirección de envío?" (coseno 0.9836, acierta con 0 tokens). Paráfrasis más lejanas no pasan el umbral 0.92: "¿Cómo cancelo mi pedido?" vs "Quiero cancelar mi orden, ¿cómo lo hago?" da 0.8946 y no acierta; el umbral se ajusta con `CACHE_THRESHOLD`. |
 | 3:30 | 6. Inspector | Ver HNSW y cuantización int8; pulsar el botón de la API key. | Memoria estimada ~4 veces menor con int8; Qdrant responde 401 sin API key y 200 con ella. |
 
 ## Pruebas
@@ -68,6 +68,7 @@ El CI (`.github/workflows/ci.yml`) ejecuta lo mismo en cada push.
 - **401/403 desde Qdrant:** la clave se lee de `.env` al arrancar (`QDRANT__SERVICE__API_KEY`) y no se guarda en el volumen. Revisa `QDRANT_API_KEY` en `.env` y aplica el cambio con `docker compose up -d --force-recreate`.
 - **La pestaña 5 dice que Ollama no está disponible:** arranca con `docker compose --profile llm up` (comprueba `OLLAMA_URL=http://ollama:11434` y que `ollama-pull` terminó con `docker compose --profile llm ps -a`), o inicia Ollama nativo y usa `OLLAMA_URL=http://host.docker.internal:11434`; confirma el modelo con `ollama list`. En Linux se usa `host.docker.internal` gracias a `extra_hosts`. Sin Ollama se muestran solo los gráficos del benchmark grabado.
 - **`ollama-pull` tarda mucho:** la primera vez descarga ~2 GB; con red lenta espera a que termine, el progreso se conserva en el volumen.
+- **`docker compose --profile llm up` se queda esperando:** es la descarga de llama3.2:3b (2 GB); con red lenta (330–690 KB/s en la certificación) `app` espera a que `ollama-pull` termine. Mira el avance con `docker compose logs -f ollama-pull`. Alternativa: levanta sin profile (la pestaña 5 muestra el benchmark) o usa Ollama nativo.
 - **Build lento:** la primera construcción descarga los modelos; las siguientes usan caché.
 - **Windows:** usa `copy .env.example .env` y ejecuta los comandos desde PowerShell o cmd con Docker Desktop iniciado.
 
