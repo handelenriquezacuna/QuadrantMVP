@@ -49,11 +49,11 @@ Todo se controla desde `.env` (copia de `.env.example`). Si cambias `DENSE_MODEL
 | Min | Pestaña | Qué hacer | Número a señalar |
 |---|---|---|---|
 | 0:00 | Arranque | Mostrar que `docker compose up` ingesta las FAQs. | Ingesta de 3,000 FAQs en menos de 1 minuto. |
-| 0:30 | 1. Semántica | Consultar "quiero que me devuelvan el dinero de mi compra". El denso encuentra "I want a refund for my purchase"; la palabra exacta no devuelve nada. | Similitud coseno de ~0.76 vs. 0 resultados. |
+| 0:30 | 1. Semántica | Consultar "quiero que me devuelvan el dinero de mi compra". El denso encuentra "I would like to obtain my money back"; la palabra exacta no devuelve nada. | Similitud coseno de 0.807 vs. 0 resultados. |
 | 1:15 | 2. Filtros | Elegir `category`/`intent` y comparar con y sin filtro. | Elegir una `category`: de los 5 resultados "Sin filtro", contar cuántos son de otras categorías, frente a 0 "Con filtro"; comparar también los ms de ambas columnas. |
-| 1:45 | 3. Híbrida | Consultar "refund order 12345". Ver IDs que aparecen en una sola columna y la fusión RRF. | IDs exclusivos de denso o BM25. |
+| 1:45 | 3. Híbrida | Consultar "refund order 12345". Ver IDs que aparecen en una sola columna y la fusión RRF. | 5 IDs exclusivos y 0 comunes a las tres columnas; la híbrida mezcla 3 de BM25 y 2 de denso. |
 | 2:15 | 4. Recomendaciones | Elegir ejemplos positivos y negativos y una estrategia. | El score de similitud del primer resultado; los ejemplos elegidos no se repiten (0 resultados repetidos). |
-| 2:45 | 5. Soporte | Consultar en modo con y sin Qdrant. | Señalar el % de ahorro que muestra la pestaña (viene del benchmark grabado). |
+| 2:45 | 5. Soporte | Consultar en modo con y sin Qdrant. | Benchmark grabado (llama3.2:3b, Ollama nativo en GPU M4 Max, 200 corridas): ahorro de tokens 81.8 % (76,760 vs 421,047); caché 32/50 paráfrasis (64 %) con 0 tokens; latencia media 2.2 s vs 3.9 s; categoría correcta 82 % vs 54 %. |
 | 3:30 | 6. Inspector | Ver HNSW y cuantización int8; pulsar el botón de la API key. | Memoria estimada ~4 veces menor con int8; Qdrant responde 401 sin API key y 200 con ella. |
 
 ## Pruebas
