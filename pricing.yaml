@@ -1,0 +1,11 @@
+# Precios de referencia, editar. USD por millón de tokens (entrada / salida).
+modelos:
+  referencia_pequeno:
+    entrada: 0.15
+    salida: 0.60
+  referencia_mediano:
+    entrada: 3.00
+    salida: 15.00
+  referencia_grande:
+    entrada: 15.00
+    salida: 75.00
