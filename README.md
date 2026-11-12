@@ -4,9 +4,9 @@ Laboratorio didáctico de búsqueda vectorial con Qdrant: búsqueda semántica, 
 
 ## Requisitos
 - Docker Desktop (única dependencia obligatoria; Windows, macOS o Linux).
-- Opcional, para la pestaña 5 con LLM local: [Ollama](https://ollama.com) en el equipo anfitrión.
-  - `ollama pull llama3.2:3b` (por defecto)
-  - `ollama pull qwen2.5:14b` (para la Mac de 36 GB; ajusta `OLLAMA_MODEL` en `.env`)
+- Opcional, para la pestaña 5 con LLM local (dos caminos, ver "LLM local con Ollama"):
+  - Ollama en contenedor con `--profile llm` (no instalas nada más).
+  - Ollama nativo en el equipo anfitrión ([ollama.com](https://ollama.com)).
 
 ## Arranque en 3 comandos
 ```bash
@@ -24,8 +24,21 @@ flowchart LR
     D[Dataset Bitext<br/>muestra parquet] --> I[ingest]
     I --> Q[(Qdrant<br/>faq_kb / answer_cache)]
     A[App Streamlit :8501] <--> Q
-    A -.opcional.-> O[Ollama en el host<br/>host.docker.internal:11434]
+    A -.profile llm.-> O[Ollama en contenedor<br/>ollama:11434]
+    P[ollama-pull] -.descarga modelo.-> O
+    A -.alternativa.-> N[Ollama nativo<br/>host.docker.internal:11434]
 ```
+
+## LLM local con Ollama
+Sin Ollama la pestaña 5 muestra solo el benchmark grabado.
+
+**Camino A: contenedor (recomendado).** Con `OLLAMA_URL=http://ollama:11434` en `.env`:
+```bash
+docker compose --profile llm up
+```
+Levanta `ollama` y `ollama-pull`, que descarga `OLLAMA_MODEL` (por defecto `llama3.2:3b`, unos 2 GB; `qwen2.5:14b` pesa unos 9 GB). El modelo queda en el volumen `ollama_data`, así que solo se descarga una vez. En Docker Desktop para Mac el contenedor usa CPU (sin GPU de Apple), por lo que las respuestas son más lentas.
+
+**Camino B: Ollama nativo.** Instala Ollama, ejecuta `ollama pull llama3.2:3b` y en `.env` pon `OLLAMA_URL=http://host.docker.internal:11434`. Arranca con `docker compose up` (sin profile); en Mac usa la GPU.
 
 ## Configuración
 Todo se controla desde `.env` (copia de `.env.example`). Si cambias `DENSE_MODEL`, edita también el `Dockerfile` (los modelos se descargan al construir la imagen) y reconstruye con `docker compose build`.
@@ -51,7 +64,8 @@ El CI (`.github/workflows/ci.yml`) ejecuta lo mismo en cada push.
 - **El puerto 6333 u 8501 está ocupado:** cierra el proceso que lo usa o cambia el mapeo en `docker-compose.yml`.
 - **`app` no arranca:** espera a que `ingest` termine; revisa `docker compose logs ingest`.
 - **401/403 desde Qdrant:** la clave se lee de `.env` al arrancar (`QDRANT__SERVICE__API_KEY`) y no se guarda en el volumen. Revisa `QDRANT_API_KEY` en `.env` y aplica el cambio con `docker compose up -d --force-recreate`.
-- **La pestaña 5 dice que Ollama no está disponible:** inicia Ollama en el host y confirma el modelo con `ollama list`. En Linux se usa `host.docker.internal` gracias a `extra_hosts`. Sin Ollama se muestran solo los gráficos del benchmark grabado.
+- **La pestaña 5 dice que Ollama no está disponible:** arranca con `docker compose --profile llm up` (comprueba `OLLAMA_URL=http://ollama:11434` y que `ollama-pull` terminó con `docker compose --profile llm ps -a`), o inicia Ollama nativo y usa `OLLAMA_URL=http://host.docker.internal:11434`; confirma el modelo con `ollama list`. En Linux se usa `host.docker.internal` gracias a `extra_hosts`. Sin Ollama se muestran solo los gráficos del benchmark grabado.
+- **`ollama-pull` tarda mucho:** la primera vez descarga ~2 GB; con red lenta espera a que termine, el progreso se conserva en el volumen.
 - **Build lento:** la primera construcción descarga los modelos; las siguientes usan caché.
 - **Windows:** usa `copy .env.example .env` y ejecuta los comandos desde PowerShell o cmd con Docker Desktop iniciado.
 

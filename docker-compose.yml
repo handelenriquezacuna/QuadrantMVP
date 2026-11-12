@@ -34,8 +34,40 @@ services:
     depends_on:
       ingest:
         condition: service_completed_successfully
+      ollama-pull:
+        condition: service_completed_successfully
+        required: false
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  # Opcional: LLM local en contenedor (docker compose --profile llm up).
+  # En Docker Desktop para Mac corre en CPU (sin GPU de Apple).
+  ollama:
+    image: ollama/ollama:0.40.16
+    profiles: [llm]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # Descarga el modelo una sola vez; si ya está en el volumen termina rápido.
+  ollama-pull:
+    image: ollama/ollama:0.40.16
+    profiles: [llm]
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    entrypoint: ["ollama"]
+    command: ["pull", "${OLLAMA_MODEL:-llama3.2:3b}"]
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: "no"
+
 volumes:
   qdrant_data:
+  ollama_data:
