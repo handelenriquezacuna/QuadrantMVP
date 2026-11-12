@@ -107,3 +107,23 @@ def test_integracion_cache_real_limpia(qdrant, faq_real):
         assert r2.cache_hit and r2.tokens_totales() == 0
     finally:
         qdrant.delete(ANSWER_CACHE, points_selector=models.PointIdsList(points=[pid]), wait=True)
+
+
+def test_chat_envia_num_ctx(monkeypatch):
+    enviados = []
+
+    class R:
+        def raise_for_status(self): pass
+        def json(self): return {"message": {"content": "x"}, "prompt_eval_count": 1, "eval_count": 1}
+
+    def falso_post(url, json=None, **k):
+        enviados.append(json)
+        return R()
+
+    monkeypatch.setattr(ollama.httpx, "post", falso_post)
+    monkeypatch.delenv("OLLAMA_NUM_CTX", raising=False)
+    ollama.chat("s", "u")
+    monkeypatch.setenv("OLLAMA_NUM_CTX", "4096")
+    ollama.chat("s", "u")
+    assert enviados[0]["options"]["num_ctx"] == 12288
+    assert enviados[1]["options"]["num_ctx"] == 4096

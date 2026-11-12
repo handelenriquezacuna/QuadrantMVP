@@ -22,6 +22,10 @@ def _modelo() -> str:
     return os.environ.get("OLLAMA_MODEL", "llama3.2:3b")
 
 
+def _num_ctx() -> int:
+    return int(os.environ.get("OLLAMA_NUM_CTX", "12288"))
+
+
 def disponible() -> bool:
     """True si Ollama responde (timeout 2 s) y el modelo configurado está descargado."""
     try:
@@ -40,12 +44,12 @@ def chat(sistema: str, usuario: str, modelo: str | None = None) -> RespuestaLLM:
     cuerpo = {
         "model": modelo or _modelo(),
         "stream": False,
-        "options": {"temperature": 0},
+        "options": {"temperature": 0, "num_ctx": _num_ctx()},
         "messages": [{"role": "system", "content": sistema},
                      {"role": "user", "content": usuario}],
     }
     t0 = time.perf_counter()
-    r = httpx.post(f"{_url()}/api/chat", json=cuerpo, timeout=300.0)
+    r = httpx.post(f"{_url()}/api/chat", json=cuerpo, timeout=900.0)
     r.raise_for_status()
     datos = r.json()
     ms = (time.perf_counter() - t0) * 1000

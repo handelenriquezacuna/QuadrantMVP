@@ -18,6 +18,7 @@ Fuente única de verdad entre módulos. Solo el Dictador la modifica. Cada tarea
 | `OLLAMA_URL` | `http://ollama:11434` (contenedor, profile `llm`). Alternativa: `http://host.docker.internal:11434` para Ollama nativo en el host | soporte, ollama-pull |
 | `OLLAMA_MODEL` | `llama3.2:3b` (en la Mac M4 Max: `qwen2.5:14b`) | soporte, ollama-pull |
 | `CACHE_THRESHOLD` | `0.92` | soporte |
+| `OLLAMA_NUM_CTX` | `12288` | soporte (se envía como `options.num_ctx` en cada `/api/chat`) |
 
 ## §2 Docker Compose
 
@@ -107,7 +108,7 @@ def cache_guardar(pregunta: str, vector: list[float], respuesta: str, category: 
 class RespuestaLLM:
     texto: str; tokens_entrada: int; tokens_salida: int; latencia_ms: float   # de prompt_eval_count / eval_count
 def disponible() -> bool                                   # GET {OLLAMA_URL}/api/tags, timeout 2 s, y el modelo está descargado
-def chat(sistema: str, usuario: str, modelo: str | None = None) -> RespuestaLLM   # POST /api/chat, stream=false, temperature=0
+def chat(sistema: str, usuario: str, modelo: str | None = None) -> RespuestaLLM   # POST /api/chat, stream=false, options={temperature: 0, num_ctx: OLLAMA_NUM_CTX}
 
 # app/soporte/metricas.py
 @dataclass
