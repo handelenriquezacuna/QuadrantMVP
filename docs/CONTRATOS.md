@@ -118,7 +118,7 @@ class ResultadoConsulta:
     def tokens_totales(self) -> int
     def latencia_total_ms(self) -> float
 def responder_con_qdrant(pregunta: str, umbral: float | None = None, llm=chat) -> ResultadoConsulta   # grafo LangGraph: triage → retriever → responder → qa
-def responder_sin_qdrant(pregunta: str, llm=chat) -> ResultadoConsulta    # LLM clasifica category; prompt con 30 FAQs de esa category leídas del parquet
+def responder_sin_qdrant(pregunta: str, llm=chat, categorias: list[str] | None = None) -> ResultadoConsulta    # LLM clasifica category; prompt con 30 FAQs de esa category leídas del parquet
 ```
 
 - Nodos y nombres en `MetricaNodo.nodo`: `triage`, `retriever`, `responder`, `qa` (con Qdrant); `clasificador`, `responder` (sin Qdrant).
@@ -132,7 +132,7 @@ def responder_sin_qdrant(pregunta: str, llm=chat) -> ResultadoConsulta    # LLM 
 ```yaml
 moneda: USD
 unidad: por_millon_tokens
-referencias:
+modelos:
   <nombre>: {entrada: float, salida: float, nota: str}
 ```
 
