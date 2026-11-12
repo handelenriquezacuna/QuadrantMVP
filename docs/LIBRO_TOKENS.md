@@ -15,7 +15,7 @@ Tokens según los reporta la herramienta de subagentes (`subagent_tokens` del ú
 | T-10 | dev-infra / validador | sonnet / haiku | 1 (rechazo anulado por el Dictador: el archivo señalado era una edición del Dictador al libro de tokens) | 41,355 | 40,042 | APROBADO |
 | T-11 | dev-infra / validador | sonnet / haiku | 1 (rechazo resuelto por el Dictador: faltaba registrar en D-25 la composición de la híbrida, ya medida) | 28,859 | 32,092 | APROBADO |
 | T-12 | dev-app / validador | sonnet / haiku | 1 (rechazo anulado por el Dictador: docs eran del Dictador; timeout pedido en el brief, D-22) | 29,002 | 33,481 | APROBADO |
-| T-14 | dev-infra / validador | sonnet / haiku | 1 | 27,575 | sin dato | APROBADO |
+| T-14 | dev-infra / validador | sonnet / haiku | 1 | 27,575 | 28,419 | APROBADO |
 | T-09 | certificador | opus | — (11/11 PASA; C11 con desviación D-26) | 64,570 | — | CERTIFICADO |
 | T-13 | dev-infra / validador | sonnet / haiku | 1 | 28,708 | 28,879 | APROBADO |
 
@@ -26,9 +26,9 @@ Tokens según los reporta la herramienta de subagentes (`subagent_tokens` del ú
 | dev-infra | sonnet | 208,556 |
 | dev-datos | sonnet | 171,819 |
 | dev-app | sonnet | 146,611 |
-| validador | haiku | 461,268 |
+| validador | haiku | 489,687 |
 | certificador | opus | 64,570 |
 | Dictador (sesión principal) | opus | sin dato: la herramienta no reporta el consumo de la sesión principal |
-| **Total subagentes** | | **1,052,824** (+ validación de T-14 sin dato) |
+| **Total subagentes** | | **1,081,243** |
 
 Notas: cifras = `subagent_tokens` del último aviso de cada agente (acumulado del agente, incluye sus ciclos). Trabajo del Dictador fuera de subagentes (builds, pruebas de humo, corridas del benchmark) no tiene cifra reportada.
