@@ -1,0 +1,201 @@
+pregunta_id,pregunta,grupo,modo,cache_hit,tokens_entrada,tokens_salida,latencia_ms,category_predicha,category_real,modelo
+Q01,¿Cómo puedo crear una cuenta nueva en su tienda?,original,con_qdrant,False,1115,119,7001.9,ACCOUNT,ACCOUNT,llama3.2:3b
+Q02,"Olvidé mi contraseña, ¿cómo la recupero?",original,con_qdrant,False,1729,194,5979.8,ACCOUNT,ACCOUNT,llama3.2:3b
+Q03,Quiero cambiar a otra cuenta que tengo con ustedes,original,con_qdrant,False,1173,59,2594.9,ACCOUNT,ACCOUNT,llama3.2:3b
+Q04,Necesito eliminar mi cuenta definitivamente,original,con_qdrant,False,938,152,4224.3,ACCOUNT,ACCOUNT,llama3.2:3b
+Q05,¿Cómo edito los datos de mi cuenta?,original,con_qdrant,False,835,40,1812.9,ACCOUNT,ACCOUNT,llama3.2:3b
+Q06,Tengo problemas para registrarme en la página,original,con_qdrant,False,817,69,2310.4,ACCOUNT,ACCOUNT,llama3.2:3b
+Q07,No puedo iniciar sesión porque perdí mi clave,original,con_qdrant,False,1338,108,3612.2,ACCOUNT,ACCOUNT,llama3.2:3b
+Q08,¿Cómo actualizo mi correo electrónico en mi perfil?,original,con_qdrant,False,713,38,1932.5,SHIPPING,ACCOUNT,llama3.2:3b
+Q09,Quiero hacer un pedido de varios artículos,original,con_qdrant,False,865,87,2712.4,ORDER,ORDER,llama3.2:3b
+Q10,¿Cómo cancelo un pedido que acabo de hacer?,original,con_qdrant,False,1762,243,7098.4,ORDER,ORDER,llama3.2:3b
+Q11,¿Dónde puedo ver el estado de mi pedido?,original,con_qdrant,False,912,35,1871.0,ORDER,ORDER,llama3.2:3b
+Q12,Necesito cambiar un artículo de mi pedido,original,con_qdrant,False,1154,63,2783.0,ORDER,ORDER,llama3.2:3b
+Q13,¿Cómo rastreo mi pedido?,original,con_qdrant,False,740,47,1785.6,DELIVERY,ORDER,llama3.2:3b
+Q14,Me equivoqué de talla y quiero modificar mi orden,original,con_qdrant,False,882,66,2381.4,ORDER,ORDER,llama3.2:3b
+Q15,¿Puedo añadir un producto a un pedido ya confirmado?,original,con_qdrant,False,1457,146,4630.0,FEEDBACK,ORDER,llama3.2:3b
+Q16,Ayúdenme a comprar un producto desde la web,original,con_qdrant,False,692,70,2367.8,ORDER,ORDER,llama3.2:3b
+Q17,¿Cómo solicito un reembolso por mi compra?,original,con_qdrant,False,1130,137,4129.3,REFUND,REFUND,llama3.2:3b
+Q18,¿Cuánto tarda en llegar mi reembolso?,original,con_qdrant,False,1405,156,4621.7,REFUND,REFUND,llama3.2:3b
+Q19,¿Cuál es su política de reembolsos?,original,con_qdrant,False,2571,482,14142.3,REFUND,REFUND,llama3.2:3b
+Q20,Quiero que me devuelvan el dinero de un producto defectuoso,original,con_qdrant,False,1239,181,5358.1,REFUND,REFUND,llama3.2:3b
+Q21,¿Cómo sé si ya aprobaron mi reembolso?,original,con_qdrant,False,948,171,4903.2,REFUND,REFUND,llama3.2:3b
+Q22,¿Cómo descargo la factura de mi compra?,original,con_qdrant,False,907,120,3426.0,INVOICE,INVOICE,llama3.2:3b
+Q23,Necesito una copia de mi factura del mes pasado,original,con_qdrant,False,861,40,1879.8,INVOICE,INVOICE,llama3.2:3b
+Q24,¿Dónde reviso los datos de una factura?,original,con_qdrant,False,905,33,1722.9,INVOICE,INVOICE,llama3.2:3b
+Q25,La factura tiene un error en mi nombre,original,con_qdrant,False,932,69,2421.7,INVOICE,INVOICE,llama3.2:3b
+Q26,¿Cómo me comunico con atención al cliente?,original,con_qdrant,False,874,79,2500.6,CONTACT,CONTACT,llama3.2:3b
+Q27,"Quiero hablar con una persona real, no con un bot",original,con_qdrant,False,1387,122,3922.9,CONTACT,CONTACT,llama3.2:3b
+Q28,¿Cuál es el teléfono de soporte?,original,con_qdrant,False,718,55,1988.2,CONTACT,CONTACT,llama3.2:3b
+Q29,¿En qué horario atienden al público?,original,con_qdrant,False,696,20,1230.9,CONTACT,CONTACT,llama3.2:3b
+Q30,Quiero dejar una reseña sobre mi última compra,original,con_qdrant,False,780,33,1567.2,DELIVERY,FEEDBACK,llama3.2:3b
+Q31,Tengo una queja sobre el trato que recibí,original,con_qdrant,False,825,75,2471.6,PAYMENT,FEEDBACK,llama3.2:3b
+Q32,¿Cómo les envío mis comentarios sobre el servicio?,original,con_qdrant,False,936,75,2619.5,FEEDBACK,FEEDBACK,llama3.2:3b
+Q33,Quiero reclamar porque mi experiencia fue mala,original,con_qdrant,False,971,97,3117.1,FEEDBACK,FEEDBACK,llama3.2:3b
+Q34,¿Qué opciones de entrega ofrecen?,original,con_qdrant,False,1635,178,5359.4,DELIVERY,DELIVERY,llama3.2:3b
+Q35,¿Cuánto tarda la entrega a domicilio?,original,con_qdrant,False,793,60,2139.6,DELIVERY,DELIVERY,llama3.2:3b
+Q36,¿Tienen entrega el mismo día?,original,con_qdrant,False,907,68,2447.6,DELIVERY,DELIVERY,llama3.2:3b
+Q37,¿En cuántos días llegará mi paquete?,original,con_qdrant,False,770,67,2403.5,DELIVERY,DELIVERY,llama3.2:3b
+Q38,¿Qué métodos de pago aceptan?,original,con_qdrant,False,1329,127,4457.3,PAYMENT,PAYMENT,llama3.2:3b
+Q39,¿Puedo pagar con tarjeta de crédito?,original,con_qdrant,False,991,91,3198.4,PAYMENT,PAYMENT,llama3.2:3b
+Q40,Mi pago fue rechazado y no sé por qué,original,con_qdrant,False,987,145,4762.6,PAYMENT,PAYMENT,llama3.2:3b
+Q41,Me cobraron dos veces la misma compra,original,con_qdrant,False,952,77,2760.6,INVOICE,PAYMENT,llama3.2:3b
+Q42,Quiero cambiar la dirección de envío de mi pedido,original,con_qdrant,False,1029,141,3921.9,SHIPPING,SHIPPING,llama3.2:3b
+Q43,¿Cómo registro una nueva dirección de envío?,original,con_qdrant,False,1231,140,4140.4,SHIPPING,SHIPPING,llama3.2:3b
+Q44,"Puse mal la dirección de entrega, ¿puedo corregirla?",original,con_qdrant,False,650,50,1762.2,SHIPPING,SHIPPING,llama3.2:3b
+Q45,¿Puedo enviar mi compra a la casa de un familiar?,original,con_qdrant,False,950,101,3126.6,FEEDBACK,SHIPPING,llama3.2:3b
+Q46,¿Cómo me suscribo al boletín de noticias?,original,con_qdrant,False,893,92,2827.9,SUBSCRIPTION,SUBSCRIPTION,llama3.2:3b
+Q47,Quiero darme de baja del newsletter,original,con_qdrant,False,887,63,2271.4,SUBSCRIPTION,SUBSCRIPTION,llama3.2:3b
+Q48,¿Cómo me inscribo para recibir sus ofertas por correo?,original,con_qdrant,False,1462,165,4967.5,SHIPPING,SUBSCRIPTION,llama3.2:3b
+Q49,¿Hay una tarifa por cancelar mi pedido?,original,con_qdrant,False,1842,133,4760.7,ORDER,CANCEL,llama3.2:3b
+Q50,¿Cuánto cuesta cancelar un servicio antes de tiempo?,original,con_qdrant,False,495,40,1372.0,CANCEL,CANCEL,llama3.2:3b
+Q01p,¿Qué pasos debo seguir para abrir una cuenta nueva en su tienda?,parafrasis,con_qdrant,False,1077,170,4750.3,ACCOUNT,ACCOUNT,llama3.2:3b
+Q02p,"Se me olvidó la contraseña, ¿cómo puedo recuperarla?",parafrasis,con_qdrant,False,1733,194,5090.6,ACCOUNT,ACCOUNT,llama3.2:3b
+Q03p,Necesito pasar a otra cuenta que tengo con ustedes,parafrasis,con_qdrant,False,963,75,2404.7,INVOICE,ACCOUNT,llama3.2:3b
+Q04p,Quiero borrar mi cuenta de forma definitiva,parafrasis,con_qdrant,False,1135,165,4508.7,ACCOUNT,ACCOUNT,llama3.2:3b
+Q05p,¿De qué manera puedo modificar los datos de mi cuenta?,parafrasis,con_qdrant,False,919,88,2633.0,ACCOUNT,ACCOUNT,llama3.2:3b
+Q06p,Me da errores al intentar registrarme en la página,parafrasis,con_qdrant,False,894,84,2721.7,ACCOUNT,ACCOUNT,llama3.2:3b
+Q07p,No logro iniciar sesión porque perdí mi clave,parafrasis,con_qdrant,True,0,0,11.0,ACCOUNT,ACCOUNT,llama3.2:3b
+Q08p,¿Cómo cambio el correo electrónico de mi perfil?,parafrasis,con_qdrant,False,1346,63,2712.1,ACCOUNT,ACCOUNT,llama3.2:3b
+Q09p,Deseo realizar un pedido de varios artículos,parafrasis,con_qdrant,True,0,0,13.2,ORDER,ORDER,llama3.2:3b
+Q10p,¿Cómo anulo un pedido que acabo de realizar?,parafrasis,con_qdrant,True,0,0,11.5,ORDER,ORDER,llama3.2:3b
+Q11p,¿Dónde consulto el estado de mi pedido?,parafrasis,con_qdrant,False,889,57,2160.4,CONTACT,ORDER,llama3.2:3b
+Q12p,Necesito modificar un artículo de mi pedido,parafrasis,con_qdrant,True,0,0,13.0,ORDER,ORDER,llama3.2:3b
+Q13p,¿De qué forma puedo rastrear mi pedido?,parafrasis,con_qdrant,False,924,49,1962.2,ORDER,ORDER,llama3.2:3b
+Q14p,Pedí la talla equivocada y quiero cambiar mi orden,parafrasis,con_qdrant,True,0,0,12.4,ORDER,ORDER,llama3.2:3b
+Q15p,¿Es posible agregar un producto a un pedido ya confirmado?,parafrasis,con_qdrant,True,0,0,13.1,FEEDBACK,ORDER,llama3.2:3b
+Q16p,Ayúdenme a hacer una compra de un producto en la web,parafrasis,con_qdrant,True,0,0,16.9,ORDER,ORDER,llama3.2:3b
+Q17p,¿Cómo pido el reembolso de mi compra?,parafrasis,con_qdrant,True,0,0,23.1,REFUND,REFUND,llama3.2:3b
+Q18p,¿Cuánto demora en llegarme el reembolso?,parafrasis,con_qdrant,True,0,0,12.8,REFUND,REFUND,llama3.2:3b
+Q19p,¿Cuál es la política de reembolsos que tienen?,parafrasis,con_qdrant,True,0,0,61.4,REFUND,REFUND,llama3.2:3b
+Q20p,Quiero recuperar mi dinero por un producto defectuoso,parafrasis,con_qdrant,True,0,0,10.1,REFUND,REFUND,llama3.2:3b
+Q21p,¿Cómo puedo saber si mi reembolso ya fue aprobado?,parafrasis,con_qdrant,True,0,0,7.7,REFUND,REFUND,llama3.2:3b
+Q22p,¿Cómo puedo bajar la factura de mi compra?,parafrasis,con_qdrant,True,0,0,8.3,INVOICE,INVOICE,llama3.2:3b
+Q23p,Necesito una copia de la factura del mes pasado,parafrasis,con_qdrant,True,0,0,13.4,INVOICE,INVOICE,llama3.2:3b
+Q24p,¿Dónde puedo revisar los datos de una factura?,parafrasis,con_qdrant,True,0,0,8.0,INVOICE,INVOICE,llama3.2:3b
+Q25p,Mi nombre aparece con un error en la factura,parafrasis,con_qdrant,True,0,0,14.2,INVOICE,INVOICE,llama3.2:3b
+Q26p,¿Cómo puedo contactar con el servicio de atención al cliente?,parafrasis,con_qdrant,False,847,58,2118.6,CONTACT,CONTACT,llama3.2:3b
+Q27p,"Quiero hablar con una persona de verdad, no con un bot",parafrasis,con_qdrant,True,0,0,11.7,CONTACT,CONTACT,llama3.2:3b
+Q28p,¿Cuál es el número de teléfono de soporte?,parafrasis,con_qdrant,False,699,22,969.7,CONTACT,CONTACT,llama3.2:3b
+Q29p,¿Cuál es su horario de atención al público?,parafrasis,con_qdrant,False,786,20,1169.1,CONTACT,CONTACT,llama3.2:3b
+Q30p,Quiero escribir una reseña sobre mi última compra,parafrasis,con_qdrant,False,827,62,2151.7,ORDER,FEEDBACK,llama3.2:3b
+Q31p,Quiero presentar una queja por el trato que recibí,parafrasis,con_qdrant,True,0,0,15.7,PAYMENT,FEEDBACK,llama3.2:3b
+Q32p,¿De qué forma les mando mis comentarios sobre el servicio?,parafrasis,con_qdrant,True,0,0,9.9,FEEDBACK,FEEDBACK,llama3.2:3b
+Q33p,Quiero hacer un reclamo porque mi experiencia fue mala,parafrasis,con_qdrant,True,0,0,47.7,FEEDBACK,FEEDBACK,llama3.2:3b
+Q34p,¿Cuáles son las opciones de entrega que ofrecen?,parafrasis,con_qdrant,True,0,0,77.2,DELIVERY,DELIVERY,llama3.2:3b
+Q35p,¿Cuánto demora la entrega a domicilio?,parafrasis,con_qdrant,True,0,0,9.1,DELIVERY,DELIVERY,llama3.2:3b
+Q36p,¿Hacen entregas el mismo día?,parafrasis,con_qdrant,True,0,0,6.3,DELIVERY,DELIVERY,llama3.2:3b
+Q37p,¿Cuántos días tardará en llegar mi paquete?,parafrasis,con_qdrant,False,783,70,2197.3,DELIVERY,DELIVERY,llama3.2:3b
+Q38p,¿Cuáles métodos de pago aceptan?,parafrasis,con_qdrant,True,0,0,10.1,PAYMENT,PAYMENT,llama3.2:3b
+Q39p,¿Se puede pagar con tarjeta de crédito?,parafrasis,con_qdrant,True,0,0,6.1,PAYMENT,PAYMENT,llama3.2:3b
+Q40p,Me rechazaron el pago y no sé la razón,parafrasis,con_qdrant,True,0,0,46.4,PAYMENT,PAYMENT,llama3.2:3b
+Q41p,Me hicieron dos cobros por la misma compra,parafrasis,con_qdrant,False,685,59,1917.2,ORDER,PAYMENT,llama3.2:3b
+Q42p,Necesito cambiar la dirección de envío de mi pedido,parafrasis,con_qdrant,True,0,0,10.4,SHIPPING,SHIPPING,llama3.2:3b
+Q43p,¿Cómo agrego una dirección de envío nueva?,parafrasis,con_qdrant,True,0,0,6.9,SHIPPING,SHIPPING,llama3.2:3b
+Q44p,"Escribí mal la dirección de entrega, ¿puedo corregirla?",parafrasis,con_qdrant,False,630,49,1701.9,SHIPPING,SHIPPING,llama3.2:3b
+Q45p,¿Puedo mandar mi compra a la casa de un familiar?,parafrasis,con_qdrant,False,1007,142,3952.2,FEEDBACK,SHIPPING,llama3.2:3b
+Q46p,¿Cómo puedo suscribirme al boletín de noticias?,parafrasis,con_qdrant,True,0,0,9.4,SUBSCRIPTION,SUBSCRIPTION,llama3.2:3b
+Q47p,Quiero cancelar mi suscripción al newsletter,parafrasis,con_qdrant,False,934,26,1547.6,SUBSCRIPTION,SUBSCRIPTION,llama3.2:3b
+Q48p,¿Cómo me apunto para recibir sus ofertas por correo?,parafrasis,con_qdrant,True,0,0,11.8,SHIPPING,SUBSCRIPTION,llama3.2:3b
+Q49p,¿Cobran alguna tarifa por cancelar mi pedido?,parafrasis,con_qdrant,True,0,0,8.1,ORDER,CANCEL,llama3.2:3b
+Q50p,¿Cuál es el costo de cancelar un servicio antes de tiempo?,parafrasis,con_qdrant,True,0,0,9.1,CANCEL,CANCEL,llama3.2:3b
+Q01,¿Cómo puedo crear una cuenta nueva en su tienda?,original,sin_qdrant,False,4791,208,10543.3,ORDER,ACCOUNT,llama3.2:3b
+Q02,"Olvidé mi contraseña, ¿cómo la recupero?",original,sin_qdrant,False,3375,62,5402.0,CONTACT,ACCOUNT,llama3.2:3b
+Q03,Quiero cambiar a otra cuenta que tengo con ustedes,original,sin_qdrant,False,4682,81,7872.9,ACCOUNT,ACCOUNT,llama3.2:3b
+Q04,Necesito eliminar mi cuenta definitivamente,original,sin_qdrant,False,2116,34,3031.6,CANCEL,ACCOUNT,llama3.2:3b
+Q05,¿Cómo edito los datos de mi cuenta?,original,sin_qdrant,False,4680,139,3367.3,ACCOUNT,ACCOUNT,llama3.2:3b
+Q06,Tengo problemas para registrarme en la página,original,sin_qdrant,False,3365,89,2744.8,CONTACT,ACCOUNT,llama3.2:3b
+Q07,No puedo iniciar sesión porque perdí mi clave,original,sin_qdrant,False,3365,164,6401.1,CONTACT,ACCOUNT,llama3.2:3b
+Q08,¿Cómo actualizo mi correo electrónico en mi perfil?,original,sin_qdrant,False,3369,164,3943.9,CONTACT,ACCOUNT,llama3.2:3b
+Q09,Quiero hacer un pedido de varios artículos,original,sin_qdrant,False,4785,199,4929.7,ORDER,ORDER,llama3.2:3b
+Q10,¿Cómo cancelo un pedido que acabo de hacer?,original,sin_qdrant,False,4791,238,5488.5,ORDER,ORDER,llama3.2:3b
+Q11,¿Dónde puedo ver el estado de mi pedido?,original,sin_qdrant,False,4791,63,1674.8,ORDER,ORDER,llama3.2:3b
+Q12,Necesito cambiar un artículo de mi pedido,original,sin_qdrant,False,4786,60,1269.4,ORDER,ORDER,llama3.2:3b
+Q13,¿Cómo rastreo mi pedido?,original,sin_qdrant,False,4781,53,1248.8,ORDER,ORDER,llama3.2:3b
+Q14,Me equivoqué de talla y quiero modificar mi orden,original,sin_qdrant,False,4791,108,2468.5,ORDER,ORDER,llama3.2:3b
+Q15,¿Puedo añadir un producto a un pedido ya confirmado?,original,sin_qdrant,False,4797,104,2307.1,ORDER,ORDER,llama3.2:3b
+Q16,Ayúdenme a comprar un producto desde la web,original,sin_qdrant,False,3369,383,8417.6,CONTACT,ORDER,llama3.2:3b
+Q17,¿Cómo solicito un reembolso por mi compra?,original,sin_qdrant,False,5908,301,17481.5,REFUND,REFUND,llama3.2:3b
+Q18,¿Cuánto tarda en llegar mi reembolso?,original,sin_qdrant,False,5910,101,3005.4,REFUND,REFUND,llama3.2:3b
+Q19,¿Cuál es su política de reembolsos?,original,sin_qdrant,False,5906,404,9930.9,REFUND,REFUND,llama3.2:3b
+Q20,Quiero que me devuelvan el dinero de un producto defectuoso,original,sin_qdrant,False,5912,119,3053.2,REFUND,REFUND,llama3.2:3b
+Q21,¿Cómo sé si ya aprobaron mi reembolso?,original,sin_qdrant,False,3415,164,7734.3,FEEDBACK,REFUND,llama3.2:3b
+Q22,¿Cómo descargo la factura de mi compra?,original,sin_qdrant,False,3407,150,3449.7,FEEDBACK,INVOICE,llama3.2:3b
+Q23,Necesito una copia de mi factura del mes pasado,original,sin_qdrant,False,4792,241,5713.5,ORDER,INVOICE,llama3.2:3b
+Q24,¿Dónde reviso los datos de una factura?,original,sin_qdrant,False,3802,24,4879.2,INVOICE,INVOICE,llama3.2:3b
+Q25,La factura tiene un error en mi nombre,original,sin_qdrant,False,3794,71,1493.0,INVOICE,INVOICE,llama3.2:3b
+Q26,¿Cómo me comunico con atención al cliente?,original,sin_qdrant,False,3367,146,3224.5,CONTACT,CONTACT,llama3.2:3b
+Q27,"Quiero hablar con una persona real, no con un bot",original,sin_qdrant,False,3371,75,1759.2,CONTACT,CONTACT,llama3.2:3b
+Q28,¿Cuál es el teléfono de soporte?,original,sin_qdrant,False,3369,18,405.6,CONTACT,CONTACT,llama3.2:3b
+Q29,¿En qué horario atienden al público?,original,sin_qdrant,False,3369,82,1878.5,CONTACT,CONTACT,llama3.2:3b
+Q30,Quiero dejar una reseña sobre mi última compra,original,sin_qdrant,False,3409,124,2699.9,FEEDBACK,FEEDBACK,llama3.2:3b
+Q31,Tengo una queja sobre el trato que recibí,original,sin_qdrant,False,3411,106,2306.5,FEEDBACK,FEEDBACK,llama3.2:3b
+Q32,¿Cómo les envío mis comentarios sobre el servicio?,original,sin_qdrant,False,3409,84,1855.9,FEEDBACK,FEEDBACK,llama3.2:3b
+Q33,Quiero reclamar porque mi experiencia fue mala,original,sin_qdrant,False,3407,195,4481.0,FEEDBACK,FEEDBACK,llama3.2:3b
+Q34,¿Qué opciones de entrega ofrecen?,original,sin_qdrant,False,4226,183,9093.1,DELIVERY,DELIVERY,llama3.2:3b
+Q35,¿Cuánto tarda la entrega a domicilio?,original,sin_qdrant,False,4234,74,1737.7,DELIVERY,DELIVERY,llama3.2:3b
+Q36,¿Tienen entrega el mismo día?,original,sin_qdrant,False,4226,45,1098.9,DELIVERY,DELIVERY,llama3.2:3b
+Q37,¿En cuántos días llegará mi paquete?,original,sin_qdrant,False,3371,166,3657.1,CONTACT,DELIVERY,llama3.2:3b
+Q38,¿Qué métodos de pago aceptan?,original,sin_qdrant,False,4308,91,7098.1,PAYMENT,PAYMENT,llama3.2:3b
+Q39,¿Puedo pagar con tarjeta de crédito?,original,sin_qdrant,False,3371,209,4679.1,CONTACT,PAYMENT,llama3.2:3b
+Q40,Mi pago fue rechazado y no sé por qué,original,sin_qdrant,False,3411,221,4931.7,FEEDBACK,PAYMENT,llama3.2:3b
+Q41,Me cobraron dos veces la misma compra,original,sin_qdrant,False,4785,166,4017.1,ORDER,PAYMENT,llama3.2:3b
+Q42,Quiero cambiar la dirección de envío de mi pedido,original,sin_qdrant,False,4789,235,5529.3,ORDER,SHIPPING,llama3.2:3b
+Q43,¿Cómo registro una nueva dirección de envío?,original,sin_qdrant,False,4787,141,3358.8,ORDER,SHIPPING,llama3.2:3b
+Q44,"Puse mal la dirección de entrega, ¿puedo corregirla?",original,sin_qdrant,False,4801,253,6023.7,ORDER,SHIPPING,llama3.2:3b
+Q45,¿Puedo enviar mi compra a la casa de un familiar?,original,sin_qdrant,False,4238,290,7044.4,DELIVERY,SHIPPING,llama3.2:3b
+Q46,¿Cómo me suscribo al boletín de noticias?,original,sin_qdrant,False,3589,108,6832.8,SUBSCRIPTION,SUBSCRIPTION,llama3.2:3b
+Q47,Quiero darme de baja del newsletter,original,sin_qdrant,False,3403,94,2395.8,FEEDBACK,SUBSCRIPTION,llama3.2:3b
+Q48,¿Cómo me inscribo para recibir sus ofertas por correo?,original,sin_qdrant,False,3375,183,4105.1,CONTACT,SUBSCRIPTION,llama3.2:3b
+Q49,¿Hay una tarifa por cancelar mi pedido?,original,sin_qdrant,False,5904,99,2487.3,REFUND,CANCEL,llama3.2:3b
+Q50,¿Cuánto cuesta cancelar un servicio antes de tiempo?,original,sin_qdrant,False,3415,87,2018.0,FEEDBACK,CANCEL,llama3.2:3b
+Q01p,¿Qué pasos debo seguir para abrir una cuenta nueva en su tienda?,parafrasis,sin_qdrant,False,4801,206,4772.7,ORDER,ACCOUNT,llama3.2:3b
+Q02p,"Se me olvidó la contraseña, ¿cómo puedo recuperarla?",parafrasis,sin_qdrant,False,3379,131,2976.7,CONTACT,ACCOUNT,llama3.2:3b
+Q03p,Necesito pasar a otra cuenta que tengo con ustedes,parafrasis,sin_qdrant,False,177,49,1053.7,,ACCOUNT,llama3.2:3b
+Q04p,Quiero borrar mi cuenta de forma definitiva,parafrasis,sin_qdrant,False,4680,15,383.6,ACCOUNT,ACCOUNT,llama3.2:3b
+Q05p,¿De qué manera puedo modificar los datos de mi cuenta?,parafrasis,sin_qdrant,False,4684,170,3974.8,ACCOUNT,ACCOUNT,llama3.2:3b
+Q06p,Me da errores al intentar registrarme en la página,parafrasis,sin_qdrant,False,3409,99,2238.4,FEEDBACK,ACCOUNT,llama3.2:3b
+Q07p,No logro iniciar sesión porque perdí mi clave,parafrasis,sin_qdrant,False,3367,244,5361.1,CONTACT,ACCOUNT,llama3.2:3b
+Q08p,¿Cómo cambio el correo electrónico de mi perfil?,parafrasis,sin_qdrant,False,3367,184,3950.0,CONTACT,ACCOUNT,llama3.2:3b
+Q09p,Deseo realizar un pedido de varios artículos,parafrasis,sin_qdrant,False,4787,207,4910.5,ORDER,ORDER,llama3.2:3b
+Q10p,¿Cómo anulo un pedido que acabo de realizar?,parafrasis,sin_qdrant,False,2123,67,1491.1,CANCEL,ORDER,llama3.2:3b
+Q11p,¿Dónde consulto el estado de mi pedido?,parafrasis,sin_qdrant,False,4791,61,1455.9,ORDER,ORDER,llama3.2:3b
+Q12p,Necesito modificar un artículo de mi pedido,parafrasis,sin_qdrant,False,4786,247,5661.4,ORDER,ORDER,llama3.2:3b
+Q13p,¿De qué forma puedo rastrear mi pedido?,parafrasis,sin_qdrant,False,4787,222,5214.4,ORDER,ORDER,llama3.2:3b
+Q14p,Pedí la talla equivocada y quiero cambiar mi orden,parafrasis,sin_qdrant,False,4793,290,6678.1,ORDER,ORDER,llama3.2:3b
+Q15p,¿Es posible agregar un producto a un pedido ya confirmado?,parafrasis,sin_qdrant,False,4793,110,2569.8,ORDER,ORDER,llama3.2:3b
+Q16p,Ayúdenme a hacer una compra de un producto en la web,parafrasis,sin_qdrant,False,3375,210,4600.0,CONTACT,ORDER,llama3.2:3b
+Q17p,¿Cómo pido el reembolso de mi compra?,parafrasis,sin_qdrant,False,5908,268,6249.6,REFUND,REFUND,llama3.2:3b
+Q18p,¿Cuánto demora en llegarme el reembolso?,parafrasis,sin_qdrant,False,5912,113,2677.5,REFUND,REFUND,llama3.2:3b
+Q19p,¿Cuál es la política de reembolsos que tienen?,parafrasis,sin_qdrant,False,5910,355,8349.4,REFUND,REFUND,llama3.2:3b
+Q20p,Quiero recuperar mi dinero por un producto defectuoso,parafrasis,sin_qdrant,False,5906,116,2970.6,REFUND,REFUND,llama3.2:3b
+Q21p,¿Cómo puedo saber si mi reembolso ya fue aprobado?,parafrasis,sin_qdrant,False,3419,125,2753.2,FEEDBACK,REFUND,llama3.2:3b
+Q22p,¿Cómo puedo bajar la factura de mi compra?,parafrasis,sin_qdrant,False,5904,227,5460.8,REFUND,INVOICE,llama3.2:3b
+Q23p,Necesito una copia de la factura del mes pasado,parafrasis,sin_qdrant,False,3803,184,4370.5,INVOICE,INVOICE,llama3.2:3b
+Q24p,¿Dónde puedo revisar los datos de una factura?,parafrasis,sin_qdrant,False,4793,100,2473.7,ORDER,INVOICE,llama3.2:3b
+Q25p,Mi nombre aparece con un error en la factura,parafrasis,sin_qdrant,False,3407,245,5417.5,FEEDBACK,INVOICE,llama3.2:3b
+Q26p,¿Cómo puedo contactar con el servicio de atención al cliente?,parafrasis,sin_qdrant,False,3373,168,3872.2,CONTACT,CONTACT,llama3.2:3b
+Q27p,"Quiero hablar con una persona de verdad, no con un bot",parafrasis,sin_qdrant,False,3373,74,1822.1,CONTACT,CONTACT,llama3.2:3b
+Q28p,¿Cuál es el número de teléfono de soporte?,parafrasis,sin_qdrant,False,3373,19,486.7,CONTACT,CONTACT,llama3.2:3b
+Q29p,¿Cuál es su horario de atención al público?,parafrasis,sin_qdrant,False,3371,91,2010.3,CONTACT,CONTACT,llama3.2:3b
+Q30p,Quiero escribir una reseña sobre mi última compra,parafrasis,sin_qdrant,False,3411,132,2961.1,FEEDBACK,FEEDBACK,llama3.2:3b
+Q31p,Quiero presentar una queja por el trato que recibí,parafrasis,sin_qdrant,False,3415,100,2222.2,FEEDBACK,FEEDBACK,llama3.2:3b
+Q32p,¿De qué forma les mando mis comentarios sobre el servicio?,parafrasis,sin_qdrant,False,3413,76,1721.4,FEEDBACK,FEEDBACK,llama3.2:3b
+Q33p,Quiero hacer un reclamo porque mi experiencia fue mala,parafrasis,sin_qdrant,False,3411,187,4065.9,FEEDBACK,FEEDBACK,llama3.2:3b
+Q34p,¿Cuáles son las opciones de entrega que ofrecen?,parafrasis,sin_qdrant,False,4236,199,4436.7,DELIVERY,DELIVERY,llama3.2:3b
+Q35p,¿Cuánto demora la entrega a domicilio?,parafrasis,sin_qdrant,False,4234,88,1973.3,DELIVERY,DELIVERY,llama3.2:3b
+Q36p,¿Hacen entregas el mismo día?,parafrasis,sin_qdrant,False,3365,128,2793.2,CONTACT,DELIVERY,llama3.2:3b
+Q37p,¿Cuántos días tardará en llegar mi paquete?,parafrasis,sin_qdrant,False,3373,131,2880.4,CONTACT,DELIVERY,llama3.2:3b
+Q38p,¿Cuáles métodos de pago aceptan?,parafrasis,sin_qdrant,False,4312,93,2043.9,PAYMENT,PAYMENT,llama3.2:3b
+Q39p,¿Se puede pagar con tarjeta de crédito?,parafrasis,sin_qdrant,False,3369,109,2381.9,CONTACT,PAYMENT,llama3.2:3b
+Q40p,Me rechazaron el pago y no sé la razón,parafrasis,sin_qdrant,False,3413,286,6296.8,FEEDBACK,PAYMENT,llama3.2:3b
+Q41p,Me hicieron dos cobros por la misma compra,parafrasis,sin_qdrant,False,4787,94,2062.5,ORDER,PAYMENT,llama3.2:3b
+Q42p,Necesito cambiar la dirección de envío de mi pedido,parafrasis,sin_qdrant,False,4792,181,4316.5,ORDER,SHIPPING,llama3.2:3b
+Q43p,¿Cómo agrego una dirección de envío nueva?,parafrasis,sin_qdrant,False,4789,204,4663.2,ORDER,SHIPPING,llama3.2:3b
+Q44p,"Escribí mal la dirección de entrega, ¿puedo corregirla?",parafrasis,sin_qdrant,False,3423,54,1324.2,FEEDBACK,SHIPPING,llama3.2:3b
+Q45p,¿Puedo mandar mi compra a la casa de un familiar?,parafrasis,sin_qdrant,False,4240,301,6761.9,DELIVERY,SHIPPING,llama3.2:3b
+Q46p,¿Cómo puedo suscribirme al boletín de noticias?,parafrasis,sin_qdrant,False,3591,98,2146.5,SUBSCRIPTION,SUBSCRIPTION,llama3.2:3b
+Q47p,Quiero cancelar mi suscripción al newsletter,parafrasis,sin_qdrant,False,2119,90,1933.7,CANCEL,SUBSCRIPTION,llama3.2:3b
+Q48p,¿Cómo me apunto para recibir sus ofertas por correo?,parafrasis,sin_qdrant,False,3373,52,1167.1,CONTACT,SUBSCRIPTION,llama3.2:3b
+Q49p,¿Cobran alguna tarifa por cancelar mi pedido?,parafrasis,sin_qdrant,False,2125,142,2979.4,CANCEL,CANCEL,llama3.2:3b
+Q50p,¿Cuál es el costo de cancelar un servicio antes de tiempo?,parafrasis,sin_qdrant,False,5912,27,769.6,REFUND,CANCEL,llama3.2:3b

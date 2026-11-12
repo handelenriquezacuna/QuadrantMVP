@@ -1,0 +1,202 @@
+# 50 preguntas originales y su paráfrasis (benchmark grabado)
+preguntas:
+  - id: Q01
+    category: ACCOUNT
+    pregunta: "¿Cómo puedo crear una cuenta nueva en su tienda?"
+    parafrasis: "¿Qué pasos debo seguir para abrir una cuenta nueva en su tienda?"
+  - id: Q02
+    category: ACCOUNT
+    pregunta: "Olvidé mi contraseña, ¿cómo la recupero?"
+    parafrasis: "Se me olvidó la contraseña, ¿cómo puedo recuperarla?"
+  - id: Q03
+    category: ACCOUNT
+    pregunta: "Quiero cambiar a otra cuenta que tengo con ustedes"
+    parafrasis: "Necesito pasar a otra cuenta que tengo con ustedes"
+  - id: Q04
+    category: ACCOUNT
+    pregunta: "Necesito eliminar mi cuenta definitivamente"
+    parafrasis: "Quiero borrar mi cuenta de forma definitiva"
+  - id: Q05
+    category: ACCOUNT
+    pregunta: "¿Cómo edito los datos de mi cuenta?"
+    parafrasis: "¿De qué manera puedo modificar los datos de mi cuenta?"
+  - id: Q06
+    category: ACCOUNT
+    pregunta: "Tengo problemas para registrarme en la página"
+    parafrasis: "Me da errores al intentar registrarme en la página"
+  - id: Q07
+    category: ACCOUNT
+    pregunta: "No puedo iniciar sesión porque perdí mi clave"
+    parafrasis: "No logro iniciar sesión porque perdí mi clave"
+  - id: Q08
+    category: ACCOUNT
+    pregunta: "¿Cómo actualizo mi correo electrónico en mi perfil?"
+    parafrasis: "¿Cómo cambio el correo electrónico de mi perfil?"
+  - id: Q09
+    category: ORDER
+    pregunta: "Quiero hacer un pedido de varios artículos"
+    parafrasis: "Deseo realizar un pedido de varios artículos"
+  - id: Q10
+    category: ORDER
+    pregunta: "¿Cómo cancelo un pedido que acabo de hacer?"
+    parafrasis: "¿Cómo anulo un pedido que acabo de realizar?"
+  - id: Q11
+    category: ORDER
+    pregunta: "¿Dónde puedo ver el estado de mi pedido?"
+    parafrasis: "¿Dónde consulto el estado de mi pedido?"
+  - id: Q12
+    category: ORDER
+    pregunta: "Necesito cambiar un artículo de mi pedido"
+    parafrasis: "Necesito modificar un artículo de mi pedido"
+  - id: Q13
+    category: ORDER
+    pregunta: "¿Cómo rastreo mi pedido?"
+    parafrasis: "¿De qué forma puedo rastrear mi pedido?"
+  - id: Q14
+    category: ORDER
+    pregunta: "Me equivoqué de talla y quiero modificar mi orden"
+    parafrasis: "Pedí la talla equivocada y quiero cambiar mi orden"
+  - id: Q15
+    category: ORDER
+    pregunta: "¿Puedo añadir un producto a un pedido ya confirmado?"
+    parafrasis: "¿Es posible agregar un producto a un pedido ya confirmado?"
+  - id: Q16
+    category: ORDER
+    pregunta: "Ayúdenme a comprar un producto desde la web"
+    parafrasis: "Ayúdenme a hacer una compra de un producto en la web"
+  - id: Q17
+    category: REFUND
+    pregunta: "¿Cómo solicito un reembolso por mi compra?"
+    parafrasis: "¿Cómo pido el reembolso de mi compra?"
+  - id: Q18
+    category: REFUND
+    pregunta: "¿Cuánto tarda en llegar mi reembolso?"
+    parafrasis: "¿Cuánto demora en llegarme el reembolso?"
+  - id: Q19
+    category: REFUND
+    pregunta: "¿Cuál es su política de reembolsos?"
+    parafrasis: "¿Cuál es la política de reembolsos que tienen?"
+  - id: Q20
+    category: REFUND
+    pregunta: "Quiero que me devuelvan el dinero de un producto defectuoso"
+    parafrasis: "Quiero recuperar mi dinero por un producto defectuoso"
+  - id: Q21
+    category: REFUND
+    pregunta: "¿Cómo sé si ya aprobaron mi reembolso?"
+    parafrasis: "¿Cómo puedo saber si mi reembolso ya fue aprobado?"
+  - id: Q22
+    category: INVOICE
+    pregunta: "¿Cómo descargo la factura de mi compra?"
+    parafrasis: "¿Cómo puedo bajar la factura de mi compra?"
+  - id: Q23
+    category: INVOICE
+    pregunta: "Necesito una copia de mi factura del mes pasado"
+    parafrasis: "Necesito una copia de la factura del mes pasado"
+  - id: Q24
+    category: INVOICE
+    pregunta: "¿Dónde reviso los datos de una factura?"
+    parafrasis: "¿Dónde puedo revisar los datos de una factura?"
+  - id: Q25
+    category: INVOICE
+    pregunta: "La factura tiene un error en mi nombre"
+    parafrasis: "Mi nombre aparece con un error en la factura"
+  - id: Q26
+    category: CONTACT
+    pregunta: "¿Cómo me comunico con atención al cliente?"
+    parafrasis: "¿Cómo puedo contactar con el servicio de atención al cliente?"
+  - id: Q27
+    category: CONTACT
+    pregunta: "Quiero hablar con una persona real, no con un bot"
+    parafrasis: "Quiero hablar con una persona de verdad, no con un bot"
+  - id: Q28
+    category: CONTACT
+    pregunta: "¿Cuál es el teléfono de soporte?"
+    parafrasis: "¿Cuál es el número de teléfono de soporte?"
+  - id: Q29
+    category: CONTACT
+    pregunta: "¿En qué horario atienden al público?"
+    parafrasis: "¿Cuál es su horario de atención al público?"
+  - id: Q30
+    category: FEEDBACK
+    pregunta: "Quiero dejar una reseña sobre mi última compra"
+    parafrasis: "Quiero escribir una reseña sobre mi última compra"
+  - id: Q31
+    category: FEEDBACK
+    pregunta: "Tengo una queja sobre el trato que recibí"
+    parafrasis: "Quiero presentar una queja por el trato que recibí"
+  - id: Q32
+    category: FEEDBACK
+    pregunta: "¿Cómo les envío mis comentarios sobre el servicio?"
+    parafrasis: "¿De qué forma les mando mis comentarios sobre el servicio?"
+  - id: Q33
+    category: FEEDBACK
+    pregunta: "Quiero reclamar porque mi experiencia fue mala"
+    parafrasis: "Quiero hacer un reclamo porque mi experiencia fue mala"
+  - id: Q34
+    category: DELIVERY
+    pregunta: "¿Qué opciones de entrega ofrecen?"
+    parafrasis: "¿Cuáles son las opciones de entrega que ofrecen?"
+  - id: Q35
+    category: DELIVERY
+    pregunta: "¿Cuánto tarda la entrega a domicilio?"
+    parafrasis: "¿Cuánto demora la entrega a domicilio?"
+  - id: Q36
+    category: DELIVERY
+    pregunta: "¿Tienen entrega el mismo día?"
+    parafrasis: "¿Hacen entregas el mismo día?"
+  - id: Q37
+    category: DELIVERY
+    pregunta: "¿En cuántos días llegará mi paquete?"
+    parafrasis: "¿Cuántos días tardará en llegar mi paquete?"
+  - id: Q38
+    category: PAYMENT
+    pregunta: "¿Qué métodos de pago aceptan?"
+    parafrasis: "¿Cuáles métodos de pago aceptan?"
+  - id: Q39
+    category: PAYMENT
+    pregunta: "¿Puedo pagar con tarjeta de crédito?"
+    parafrasis: "¿Se puede pagar con tarjeta de crédito?"
+  - id: Q40
+    category: PAYMENT
+    pregunta: "Mi pago fue rechazado y no sé por qué"
+    parafrasis: "Me rechazaron el pago y no sé la razón"
+  - id: Q41
+    category: PAYMENT
+    pregunta: "Me cobraron dos veces la misma compra"
+    parafrasis: "Me hicieron dos cobros por la misma compra"
+  - id: Q42
+    category: SHIPPING
+    pregunta: "Quiero cambiar la dirección de envío de mi pedido"
+    parafrasis: "Necesito cambiar la dirección de envío de mi pedido"
+  - id: Q43
+    category: SHIPPING
+    pregunta: "¿Cómo registro una nueva dirección de envío?"
+    parafrasis: "¿Cómo agrego una dirección de envío nueva?"
+  - id: Q44
+    category: SHIPPING
+    pregunta: "Puse mal la dirección de entrega, ¿puedo corregirla?"
+    parafrasis: "Escribí mal la dirección de entrega, ¿puedo corregirla?"
+  - id: Q45
+    category: SHIPPING
+    pregunta: "¿Puedo enviar mi compra a la casa de un familiar?"
+    parafrasis: "¿Puedo mandar mi compra a la casa de un familiar?"
+  - id: Q46
+    category: SUBSCRIPTION
+    pregunta: "¿Cómo me suscribo al boletín de noticias?"
+    parafrasis: "¿Cómo puedo suscribirme al boletín de noticias?"
+  - id: Q47
+    category: SUBSCRIPTION
+    pregunta: "Quiero darme de baja del newsletter"
+    parafrasis: "Quiero cancelar mi suscripción al newsletter"
+  - id: Q48
+    category: SUBSCRIPTION
+    pregunta: "¿Cómo me inscribo para recibir sus ofertas por correo?"
+    parafrasis: "¿Cómo me apunto para recibir sus ofertas por correo?"
+  - id: Q49
+    category: CANCEL
+    pregunta: "¿Hay una tarifa por cancelar mi pedido?"
+    parafrasis: "¿Cobran alguna tarifa por cancelar mi pedido?"
+  - id: Q50
+    category: CANCEL
+    pregunta: "¿Cuánto cuesta cancelar un servicio antes de tiempo?"
+    parafrasis: "¿Cuál es el costo de cancelar un servicio antes de tiempo?"
