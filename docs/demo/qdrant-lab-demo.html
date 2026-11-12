@@ -340,38 +340,54 @@ ul.check { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
 <!-- 6 -->
 <section>
   <span class="step">6 · GUION DE LA DEMO</span>
-  <h2>Los 4 minutos, pestaña por pestaña</h2>
+  <h2>Los 4 minutos, de menos a más</h2>
+  <p class="prose">Cada paso responde la duda que deja el anterior. El stack ya está arriba, el modelo calentado y la caché vacía.</p>
   <ol class="timeline">
-    <li><span class="t">0:00</span><div class="body"><h3>Arranque</h3>
-      <div class="row"><b>Qué hacer</b><span>Mostrar que un solo comando levanta todo: <code>docker compose up</code>.</span></div>
-      <div class="row"><b>Qué demuestra</b><span>La ingesta crea las colecciones y carga las FAQs sin pasos manuales.</span></div>
-      <div class="row"><b>Señalar</b><span class="num">3,000 FAQs cargadas en 11 s · app lista en 53 s</span></div></div></li>
-    <li><span class="t">0:30</span><div class="body"><h3>1 · Búsqueda semántica</h3>
+    <li><span class="t">0:00</span><div class="body"><h3>¿Qué guarda Qdrant? · Inspector + dashboard</h3>
+      <div class="row"><b>Qué hacer</b><span>Mostrar <code>faq_kb</code> en el Inspector y abrir un punto en el dashboard.</span></div>
+      <div class="row"><b>Qué responde</b><span>Antes de hablar de similitud, qué es un punto: sin esto, “coseno 0.807” no significa nada.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">3,000 puntos · id + vector denso de 384 dimensiones + vector BM25 + payload (instruction, response, category, intent)</span></div></div></li>
+    <li><span class="t">0:20</span><div class="body"><h3>¿Puede buscar por significado? · 1 Semántica</h3>
       <div class="row"><b>Qué hacer</b><span>Buscar "quiero que me devuelvan el dinero de mi compra".</span></div>
-      <div class="row"><b>Qué demuestra</b><span>El vector denso entiende el significado entre idiomas; la búsqueda por palabra exacta no encuentra nada.</span></div>
+      <div class="row"><b>Qué responde</b><span>El vector denso entiende el significado, incluso entre idiomas; la palabra exacta no.</span></div>
       <div class="row"><b>Señalar</b><span class="num">coseno 0.807 con "I would like to obtain my money back" vs 0 resultados</span></div></div></li>
-    <li><span class="t">1:15</span><div class="body"><h3>2 · Filtros</h3>
-      <div class="row"><b>Qué hacer</b><span>Elegir una <code>category</code> y comparar las columnas "Sin filtro" y "Con filtro".</span></div>
-      <div class="row"><b>Qué demuestra</b><span>El payload index acota la búsqueda vectorial a una categoría o intención.</span></div>
-      <div class="row"><b>Señalar</b><span class="num">resultados de otras categorías: los que aparezcan sin filtro vs 0 con filtro, y los ms de cada columna</span></div></div></li>
-    <li><span class="t">1:45</span><div class="body"><h3>3 · Búsqueda híbrida</h3>
-      <div class="row"><b>Qué hacer</b><span>Buscar "refund order 12345" y comparar denso, BM25 e híbrida.</span></div>
-      <div class="row"><b>Qué demuestra</b><span>Cada método encuentra cosas distintas; RRF combina los dos rankings.</span></div>
-      <div class="row"><b>Señalar</b><span class="num">denso y BM25 no comparten ningún ID · la híbrida mezcla resultados de ambas columnas (no recitar IDs: BM25 tiene empates y su orden puede variar)</span></div></div></li>
-    <li><span class="t">2:15</span><div class="body"><h3>4 · Recomendaciones</h3>
-      <div class="row"><b>Qué hacer</b><span>Marcar ejemplos positivos y negativos y elegir una estrategia.</span></div>
-      <div class="row"><b>Qué demuestra</b><span>"Más como esto, menos como aquello" sin escribir una consulta.</span></div>
-      <div class="row"><b>Señalar</b><span class="num">score del primer resultado · 0 ejemplos repetidos en los resultados</span></div></div></li>
-    <li class="llm"><span class="t">2:45</span><div class="body"><h3>5 · Caso de soporte</h3>
-      <div class="row"><b>Qué hacer</b><span>Con la caché recién vaciada, preguntar "¿Cómo cambio mi dirección de envío?" (caché: fallo) y después "¿Cómo puedo cambiar mi dirección de envío?". Mostrar los gráficos del benchmark.</span></div>
-      <div class="row"><b>Qué demuestra</b><span>La caché semántica responde la paráfrasis sin llamar al LLM; el benchmark muestra el ahorro total.</span></div>
-      <div class="row"><b>Señalar</b><span class="num">2.ª pregunta: caché acierto, 0 tokens (coseno 0.9836) · benchmark en pantalla: 768 vs 4,210 tokens medios (81.8 %), caché 32 / 50, categoría 82 % / 54 %</span></div></div></li>
-    <li><span class="t">3:30</span><div class="body"><h3>6 · Inspector y seguridad</h3>
-      <div class="row"><b>Qué hacer</b><span>Ver la configuración HNSW y la cuantización; pulsar el botón de prueba de API key.</span></div>
-      <div class="row"><b>Qué demuestra</b><span>Cómo Qdrant ahorra memoria y que sin clave no entrega datos.</span></div>
-      <div class="row"><b>Señalar</b><span class="num">memoria estimada ~4 veces menor con int8 · 401 sin clave vs 200 con clave</span></div></div></li>
+    <li><span class="t">1:00</span><div class="body"><h3>¿Y si solo quiero una categoría? · 2 Filtros</h3>
+      <div class="row"><b>Qué hacer</b><span>Elegir una <code>category</code> y comparar "Sin filtro" y "Con filtro".</span></div>
+      <div class="row"><b>Qué responde</b><span>El payload index acota la búsqueda: se vende precisión, no velocidad.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">0 resultados de otras categorías con filtro · ms parecidos en ambas columnas</span></div></div></li>
+    <li><span class="t">1:25</span><div class="body"><h3>¿Y cuando la palabra exacta importa? · 3 Híbrida</h3>
+      <div class="row"><b>Qué hacer</b><span>Buscar "refund order 12345".</span></div>
+      <div class="row"><b>Qué responde</b><span>Un número de pedido es el caso donde BM25 gana; RRF combina los dos rankings.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">denso y BM25 no comparten ningún ID · la híbrida mezcla ambos (no recitar IDs: hay empates en BM25)</span></div></div></li>
+    <li><span class="t">1:55</span><div class="body"><h3>¿Y si no tengo una consulta? · 4 Recomendaciones</h3>
+      <div class="row"><b>Qué hacer</b><span>Marcar positivos y un negativo; cambiar de <code>average_vector</code> a <code>best_score</code>.</span></div>
+      <div class="row"><b>Qué responde</b><span>"Más como esto, menos como aquello" sin escribir texto; la estrategia importa.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">0 ejemplos repetidos · los resultados cambian con la estrategia</span></div></div></li>
+    <li class="llm"><span class="t">2:25</span><div class="body"><h3>¿Para qué sirve todo esto? · 5 Soporte</h3>
+      <div class="row"><b>Qué hacer</b><span>Dos consultas: "¿Cómo cambio mi dirección de envío?" (caché: fallo) y "¿Cómo puedo cambiar mi dirección de envío?" (caché: acierto). Luego el benchmark.</span></div>
+      <div class="row"><b>Qué responde</b><span>RAG y caché semántica: menos tokens y mejores respuestas. Es el cierre de negocio.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">en vivo: 0 tokens en la paráfrasis (coseno 0.9836) · benchmark: 768 vs 4,210 tokens medios (81.8 %), caché 32 / 50, categoría 82 % vs 54 %, 2.2 s vs 3.9 s</span></div></div></li>
+    <li><span class="t">3:40</span><div class="body"><h3>¿Está listo para producción? · 6 Inspector</h3>
+      <div class="row"><b>Qué hacer</b><span>Pulsar "Probar API key" y señalar la cuantización.</span></div>
+      <div class="row"><b>Qué responde</b><span>Seguridad y memoria: lo que separa una demo de un servicio real.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">401 sin clave vs 200 con clave · int8 4.4 MB vs 1.1 MB (~4 veces menos)</span></div></div></li>
+    <li><span class="t">4:00</span><div class="body"><h3>Cierre</h3>
+      <div class="row"><b>Qué hacer</b><span>Una frase sobre lo que queda fuera.</span></div>
+      <div class="row"><b>Qué responde</b><span>Qdrant también ofrece multitenencia, snapshots y clúster; no entran en este MVP.</span></div>
+      <div class="row"><b>Señalar</b><span class="num">—</span></div></div></li>
   </ol>
-  <p class="note">Si la paráfrasis está más lejos, la caché no acierta: "¿Cómo cancelo mi pedido?" vs "Quiero cancelar mi orden, ¿cómo lo hago?" da 0.8946, debajo del umbral 0.92 (<code>CACHE_THRESHOLD</code>). Sirve como pregunta del público: el umbral equilibra ahorro contra riesgo de devolver una respuesta que no corresponde.</p>
+  <div class="grid">
+    <div class="card"><span class="term">CUIDADO EN LA PESTAÑA 5</span><h3>No prometas velocidad en vivo</h3><p>Una consulta suelta varía: en un ensayo, sin Qdrant tardó menos porque contestó “no tengo información”. La latencia se cuenta con el benchmark (2.2 s vs 3.9 s). Las dos consultas suman unos 26 s de espera (medido: 12 s y 14 s).</p></div>
+    <div class="card"><span class="term">USA LO QUE SALGA MAL</span><h3>La respuesta mala es tu argumento</h3><p>Si el modo sin Qdrant clasifica mal la categoría o no responde nada útil, eso es el 82 % vs 54 % del benchmark visto en directo.</p></div>
+  </div>
+  <h3 style="margin-top:28px">Preguntas probables del público</h3>
+  <div class="grid">
+    <div class="card"><span class="term">ESCRITURA EN VIVO</span><h3>¿Se puede insertar y buscar al instante?</h3><p>Sí: la caché semántica es eso. La primera consulta guarda su respuesta con <code>upsert</code> y la paráfrasis la encuentra segundos después.</p></div>
+    <div class="card"><span class="term">FUERA DE DOMINIO</span><h3>¿Y si pregunto algo que no está?</h3><p>Siempre devuelve el vecino más cercano, pero con score bajo: “¿qué tiempo hace hoy?” da 0.32 y “¿quién ganó el mundial?” 0.35, frente a 0.807 en el dominio. Por eso la caché usa umbral (0.92).</p></div>
+    <div class="card"><span class="term">PERSISTENCIA</span><h3>¿Se pierde al reiniciar?</h3><p>No: Qdrant guarda en un volumen de Docker. En el ensayo la caché conservó 60 respuestas de sesiones anteriores tras reiniciar.</p></div>
+    <div class="card"><span class="term">LLM CAÍDO</span><h3>¿Y si Ollama no responde?</h3><p>La pestaña 5 muestra el benchmark grabado; las demás pestañas no dependen del LLM.</p></div>
+  </div>
+  <p class="note">Si la paráfrasis está más lejos, la caché no acierta: "¿Cómo cancelo mi pedido?" vs "Quiero cancelar mi orden, ¿cómo lo hago?" da 0.8946, debajo del umbral 0.92 (<code>CACHE_THRESHOLD</code>). El umbral equilibra ahorro contra el riesgo de devolver una respuesta que no corresponde.</p>
 </section>
 
 <!-- 7 -->
@@ -391,7 +407,7 @@ docker compose up</pre>
       <li>Dejar Ollama nativo corriendo y hacer una consulta de prueba en la pestaña 5 para cargar el modelo en memoria (la primera tarda más).</li>
       <li>Justo antes de empezar, pulsar <b>Vaciar caché</b> en la pestaña 5 para que la primera pregunta falle y la paráfrasis acierte frente al público.</li>
       <li>Al hacer scroll en la pestaña 5, mantener el cursor fuera de los gráficos: la rueda les hace zoom.</li>
-      <li>Tener abierto <code>http://localhost:6333/dashboard</code> por si preguntan cómo se ven las colecciones por dentro.</li>
+      <li>Entrar a <code>http://localhost:6333/dashboard</code> con la API key y dejar abierto un punto de <code>faq_kb</code>: es el primer paso del guion.</li>
       <li>Sin LLM, la pestaña 5 muestra el benchmark grabado: la demo funciona igual.</li>
     </ul>
   </div>

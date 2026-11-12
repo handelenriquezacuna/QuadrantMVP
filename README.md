@@ -46,15 +46,32 @@ Levanta `ollama` y `ollama-pull`, que descarga `OLLAMA_MODEL` (por defecto `llam
 Todo se controla desde `.env` (copia de `.env.example`). Si cambias `DENSE_MODEL`, edita también el `Dockerfile` (los modelos se descargan al construir la imagen) y reconstruye con `docker compose build`.
 
 ## Guion de demo (4 minutos)
-| Min | Pestaña | Qué hacer | Número a señalar |
-|---|---|---|---|
-| 0:00 | Arranque | Mostrar que `docker compose up` ingesta las FAQs. | Ingesta de 3,000 FAQs en menos de 1 minuto. |
-| 0:30 | 1. Semántica | Consultar "quiero que me devuelvan el dinero de mi compra". El denso encuentra "I would like to obtain my money back"; la palabra exacta no devuelve nada. | Similitud coseno de 0.807 vs. 0 resultados. |
-| 1:15 | 2. Filtros | Elegir `category`/`intent` y comparar con y sin filtro. | Elegir una `category`: de los 5 resultados "Sin filtro", contar cuántos son de otras categorías, frente a 0 "Con filtro"; comparar también los ms de ambas columnas. |
-| 1:45 | 3. Híbrida | Consultar "refund order 12345". Ver IDs que aparecen en una sola columna y la fusión RRF. | Denso y BM25 no comparten ningún ID; la columna híbrida (RRF) mezcla resultados de ambas. No recites IDs: BM25 tiene empates (score 5.4983) y Qdrant puede ordenarlos distinto entre corridas. |
-| 2:15 | 4. Recomendaciones | Elegir ejemplos positivos y negativos y una estrategia. | El score de similitud del primer resultado; los ejemplos elegidos no se repiten (0 resultados repetidos). |
-| 2:45 | 5. Soporte | Antes de exponer pulsa **Vaciar caché**. Consulta "¿Cómo cambio mi dirección de envío?" (caché: fallo) y luego "¿Cómo puedo cambiar mi dirección de envío?" (caché: acierto, 0 tokens). | En vivo cada consulta varía; las cifras sólidas son las del benchmark grabado (llama3.2:3b, Ollama nativo en GPU M4 Max, 200 corridas), tal como salen en pantalla: tokens medios 768 vs 4,210 (ahorro 81.8 %; totales 76,760 vs 421,047), caché en paráfrasis 32 / 50 con 0 tokens, categoría correcta 82 % vs 54 %, latencia media 2.2 s vs 3.9 s. El par "¿Cómo cancelo mi pedido?" / "Quiero cancelar mi orden, ¿cómo lo hago?" da coseno 0.8946 y no pasa el umbral 0.92 (`CACHE_THRESHOLD`). Los textos `{{Customer Support Hours}}` son marcadores del propio dataset Bitext. |
-| 3:30 | 6. Inspector | Ver HNSW y cuantización int8; pulsar el botón de la API key. | Memoria estimada ~4 veces menor con int8; Qdrant responde 401 sin API key y 200 con ella. |
+Va de menos a más: cada paso responde la duda que deja el anterior. El stack ya está levantado, el modelo calentado y la caché vaciada (ver la lista "Antes de exponer").
+
+| Min | Pregunta que responde | Pestaña | Qué hacer | Número a señalar |
+|---|---|---|---|---|
+| 0:00 | ¿Qué guarda Qdrant? | 6. Inspector + dashboard | Mostrar `faq_kb` y abrir un punto en el dashboard. | 3,000 puntos; cada uno con id, vector denso de 384 dimensiones, vector BM25 y payload (`instruction`, `response`, `category`, `intent`). |
+| 0:20 | ¿Puede buscar por significado? | 1. Semántica | Consultar "quiero que me devuelvan el dinero de mi compra". | Coseno 0.807 con "I would like to obtain my money back" (español contra inglés) vs 0 resultados por palabra exacta. |
+| 1:00 | ¿Y si solo quiero una categoría? | 2. Filtros | Elegir una `category` y comparar con y sin filtro. | Precisión, no velocidad: con filtro 0 resultados de otras categorías; los ms de ambas columnas son parecidos. |
+| 1:25 | ¿Y cuando la palabra exacta importa? | 3. Híbrida | Consultar "refund order 12345". | Denso y BM25 no comparten ningún ID; la híbrida (RRF) mezcla ambos. No recitar IDs: BM25 tiene empates y su orden puede variar. |
+| 1:55 | ¿Y si no tengo una consulta? | 4. Recomendaciones | Elegir positivos y un negativo; cambiar de `average_vector` a `best_score`. | Los ejemplos elegidos no se repiten; la estrategia cambia los resultados. |
+| 2:25 | ¿Para qué sirve todo esto? | 5. Soporte | Dos consultas: "¿Cómo cambio mi dirección de envío?" (caché: fallo) y "¿Cómo puedo cambiar mi dirección de envío?" (caché: acierto). Luego el benchmark. | En vivo: 0 tokens en la paráfrasis (coseno 0.9836) y la categoría que adivina el modo sin Qdrant. Benchmark (200 corridas): 768 vs 4,210 tokens medios (81.8 %), caché 32 / 50, categoría 82 % vs 54 %, 2.2 s vs 3.9 s. |
+| 3:40 | ¿Está listo para producción? | 6. Inspector | Pulsar "Probar API key"; señalar la cuantización. | 401 sin clave y 200 con clave; memoria int8 ~4 veces menor (4.4 MB vs 1.1 MB). |
+| 4:00 | Cierre | | Una frase: multitenencia, snapshots y clúster existen en Qdrant pero quedan fuera del MVP. | |
+
+Cuidados en la pestaña 5:
+- No prometas velocidad en vivo. Una consulta suelta varía (en un ensayo, sin Qdrant tardó menos porque contestó "no tengo información"); la latencia se cuenta con el benchmark.
+- Usa a tu favor las respuestas malas del modo sin Qdrant: si clasifica mal la categoría, eso es el 82 % vs 54 % en directo.
+- Las dos consultas suman unos 26 s de espera del LLM (medido en el ensayo: 12 s y 14 s).
+
+### Preguntas probables del público
+| Pregunta | Respuesta |
+|---|---|
+| ¿Se puede escribir en vivo? | Sí: la caché semántica es eso. La primera consulta guarda su respuesta con `upsert` y la paráfrasis la encuentra segundos después. |
+| ¿Qué pasa con una pregunta fuera de dominio? | La búsqueda siempre devuelve el vecino más cercano, pero con score bajo: "¿qué tiempo hace hoy?" da 0.32 y "¿quién ganó el mundial?" 0.35, frente a 0.807 de una pregunta del dominio. Por eso la caché usa un umbral (0.92). |
+| ¿Los datos se pierden al reiniciar? | No: Qdrant guarda en un volumen de Docker. En el ensayo, la caché conservó 60 respuestas de sesiones anteriores tras reiniciar. |
+| ¿Y si el LLM se cae? | La pestaña 5 muestra solo el benchmark grabado; el resto de la demo no depende del LLM. |
+| ¿Escala? | Qdrant tiene multitenencia, snapshots y modo clúster; están fuera de este MVP. |
 
 ## Pruebas
 ```bash
@@ -70,6 +87,7 @@ El CI (`.github/workflows/ci.yml`) ejecuta lo mismo en cada push.
 - **`ollama-pull` tarda mucho:** la primera vez descarga ~2 GB; con red lenta espera a que termine, el progreso se conserva en el volumen.
 - **`docker compose --profile llm up` se queda esperando:** es la descarga de llama3.2:3b (2 GB); con red lenta (330–690 KB/s en la certificación) `app` espera a que `ollama-pull` termine. Mira el avance con `docker compose logs -f ollama-pull`. Alternativa: levanta sin profile (la pestaña 5 muestra el benchmark) o usa Ollama nativo.
 - **La caché acierta a la primera:** quedan respuestas de sesiones anteriores en `answer_cache`. Pulsa **Vaciar caché** en la pestaña 5 (solo borra la caché; `faq_kb` no se toca).
+- **Antes de exponer:** levanta el stack, entra al dashboard con la API key y deja abierto un punto de `faq_kb`, haz una consulta de prueba en la pestaña 5 (carga el modelo) y pulsa **Vaciar caché**.
 - **Calentar el modelo:** la primera consulta a Ollama carga el modelo en memoria y tarda más; haz una consulta de prueba antes de exponer y luego vacía la caché.
 - **Build lento:** la primera construcción descarga los modelos; las siguientes usan caché.
 - **Windows:** usa `copy .env.example .env` y ejecuta los comandos desde PowerShell o cmd con Docker Desktop iniciado.
